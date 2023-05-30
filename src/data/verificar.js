@@ -28,7 +28,8 @@ export function verify(ponentes, participantes) {
         DescPlanEstratégico = arr[1]
         }
     var planEstratégico = arr
-    var transversal = document.querySelector("input[name=transversales]:checked").value
+    var transversal = ""
+        if (document.querySelector("input[name=transversales]:checked")!=null){transversal=document.querySelector("input[name=transversales]:checked").value}
     var fuentes = ""
     arr = Array.from(document.querySelectorAll("input[name=fuentes]:checked")).map((elem) => elem.value)
     //*console.log(arr.length) 
