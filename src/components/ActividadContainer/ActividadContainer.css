@@ -1,0 +1,16 @@
+.noAutorizado{
+    display: flex;
+    height: 70vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.noAutorizado i {
+    font-size: 1.8rem;
+}
+
+.noAutorizado i:hover {
+    cursor: pointer;
+}

@@ -9,6 +9,8 @@ import Hola from "../components/Hola";
 import Navbar from '../components/Navbar/Navbar';
 import Login from '../components/Login/Login';
 import Entrada from '../components/Entrada/Entrada';
+import PanelUserContainer from '../components/PanelUserContainer/PanelUserContainer'
+import ActividadContainer from '../components/ActividadContainer/ActividadContainer'
 import { useUserAuth } from "../context/UserAuthContext"
 
 import { ProtectedRoute } from "../components/ProtectedRoute";
@@ -17,8 +19,9 @@ import Codificacion from '../components/Codificacion/Codificacion';
 
 function Router() {
 
-    const { user } = useUserAuth();
-
+    const { user, userNIVEL } = useUserAuth();
+    //const localuser = JSON.parse(localStorage.getItem('localuser'));
+    //const user = localuser
     return (
         <BrowserRouter>
 
@@ -27,9 +30,9 @@ function Router() {
             <Routes>
                 <Route path='/' element={<Entrada />} />
 
-                <Route element={<ProtectedRoute user={user} />}>
-                    <Route path='/panel' element={<Hola />} />
-                    
+                <Route element={<ProtectedRoute />}>
+                    <Route path='/panel' element={<PanelUserContainer user={user} userNIVEL={userNIVEL}/>} />
+                    <Route path='/nocod/:REG' element={<ActividadContainer user={user} userNIVEL={userNIVEL}/>} />
                 </Route>
 
                 <Route path='/login' element={<Login />} />

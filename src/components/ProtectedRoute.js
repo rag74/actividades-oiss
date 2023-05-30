@@ -1,33 +1,38 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useUserAuth } from "../context/UserAuthContext"
+import { useUserAuth , useAuthState } from "../context/UserAuthContext"
 import { useEffect } from 'react';
 
 
 
-export const ProtectedRoute = ({ user/*, children*/ }) => {
+export const ProtectedRoute = ({ /*user, children*/ }) => {
 
-  console.log(user)
+ /* const auth = useUserAuth()
+  console.log("AUTH?")
+  console.log(auth)*/
+
+  const localuser = JSON.parse(localStorage.getItem('localuser'));
+  
+  console.log(localuser)
 
   return (
-    user ? <Outlet /> : <Navigate to='/login' />
+    localuser ? <Outlet /> : <Navigate to='/login' />
   );
 }
 
+/*
+export const ProtectedRoute = ({ children }) => {
 
-/*const localuser = JSON.parse(localStorage.getItem('localuser'));
-console.log(localuser);
-
-const { user, admin } = useUserAuth();
-const navigate = useNavigate();
+  const localuser = JSON.parse(localStorage.getItem('localuser'));
+  console.log(localuser);
 
 
-useEffect(() => {
-if (!user) {
-  navigate('/login');
+  const history = useHistory();
+
+  if (!localuser) {
+    history.push('/login');
+  }
+
+  return children;
 }
-
-},)
-
-
-return children;*/
+*/

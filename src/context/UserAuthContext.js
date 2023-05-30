@@ -10,6 +10,8 @@ import { auth } from "../firebase/index";
 import { doc, setDoc, updateDoc, getDoc } from '@firebase/firestore';
 import db from '../firebase';
 import { permisos } from "../data/permisos";
+import { destinatarios , iberoamerica, codigosPlan} from "../data/webdata";
+import {verify} from "../data/verificar"
 
 const userAuthContext = React.createContext();
 
@@ -18,8 +20,10 @@ export function UserAuthContextProvider(props) {
 
     const [user, setUser] = useState("");
     const [admin, setAdmin] = useState(false);
+    const [userNIVEL, setUserNIVEL] = useState("");
+
     var estadoUser = "";
-    console.log(permisos)
+    
 
 
     useEffect(() => {
@@ -35,18 +39,46 @@ export function UserAuthContextProvider(props) {
             setUser(currentUser);
             localStorage.setItem('localuser', JSON.stringify(currentUser)); //linea agregada
             estadoUser = "changed"
+            console.log("changed")
         })
     }, []);
 
 
     useEffect(() => {
+        if (user) {
+        async function getLevels() {
+                const docRef = doc(db, "nivelesUsuarios", user.uid);
+                const docSnap = await getDoc(docRef);
+                console.log("CONTEXT USER DOCSNAP.DATA")
+                console.log(docSnap.data())
+                
+                localStorage.setItem('nivelUsuario', JSON.stringify(docSnap.data()));
+                console.log('nivel usuario CONTEXT')
+                let nivelUsuarioS = JSON.parse(localStorage.getItem('nivelUsuario'));
+                setUserNIVEL(nivelUsuarioS)
+                console.log(nivelUsuarioS)
+              } 
+              getLevels()
+              
+        } else {
+                 console.log('niveles y usuario vacio')
+                 setUserNIVEL("")
+                 localStorage.removeItem('nivelUsuario');} 
+        
+      }, [user])
+    
+
+
+    useEffect(() => {
         checkAdmin();
-    }, [estadoUser]);
+        console.log("USERNIVEL CONTEXT:")
+        console.log(userNIVEL)
+    }, [estadoUser,userNIVEL]);
 
 
 
     const checkAdmin = () => {
-        const localuser = JSON.parse(localStorage.getItem('localuser'));
+        let localuser = JSON.parse(localStorage.getItem('localuser'));
         //if (localuser.uid === "l7bGGeQjnJNqoaxhQ5cd9cJRAfW2") 
         if (localuser != null) {
             permisos.includes(localuser.uid) ? setAdmin(true) : setAdmin(false)
@@ -54,7 +86,7 @@ export function UserAuthContextProvider(props) {
         console.log("CheckAdmin: " + admin)
     }
 
-    ///FUNCIONES DE LOGUEO Y REGISTRO DE USUARIOS FIREBASE
+    ///FUNCIONES DE LOGUEO Y REGISTRO DE USUARIOS FIREBASE///////
 
     function logIn(email, password) {
         return signInWithEmailAndPassword(auth, email, password);
@@ -70,121 +102,9 @@ export function UserAuthContextProvider(props) {
         estadoUser = "deleted"
     }
 
+    ////////////////////////////////////////////////////////
+ 
 
-    function generateID() {
-        let s4 = () => {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-        //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
-        return 'art-' + s4() + s4();
-    }
-
-    const guardarBorrador = async (articleData) => {
-        console.log("ArticleData dentro de guardarBorrador", articleData);
-
-        try {
-            await setDoc(doc(db, "articles", articleData.articleID), articleData);
-            console.log('subido!');
-            let element = document.getElementById("miModal");
-            element.classList.add("ver");
-        } catch (err) {
-
-            console.log(err);
-            alert(err);
-        }
-    }
-
-    const eliminarArticulo = async (articleID) => {
-
-        const docRef = doc(db, "articles", articleID);
-        try {
-            await updateDoc(docRef, {
-
-                "estado": "eliminado"
-            });
-
-            console.log('eliminado!');
-            let element = document.getElementById("miModal");
-            element.classList.add("ver");
-            /*let element2 = document.getElementById("buttonModal");
-            element2.onclick = () => { window.location.reload() }
-            let element3 = document.getElementById("closeModal");
-            element3.onclick = () => { window.location.reload() }*/
-
-        } catch (err) {
-            console.log(err);
-            alert(err);
-        }
-    }
-
-    const revisarArticulo = async (articleID) => {
-
-        const docRef = doc(db, "articles", articleID);
-        try {
-            await updateDoc(docRef, {
-
-                "estado": "pendiente"
-            });
-
-            console.log('en revisión!');
-            /*let element = document.getElementById("miModal");
-            element.classList.add("ver");
-            let element2 = document.getElementById("buttonModal");
-            element2.onclick = () => { history.push("/panel") }
-            let element3 = document.getElementById("closeModal");
-            element3.onclick = () => { history.push("/panel") };*/
-
-        } catch (err) {
-            console.log(err);
-            alert(err);
-        }
-    }
-
-
-    const publicarArticulo = async (articleID) => {
-
-        const docRef = doc(db, "articles", articleID);
-        try {
-            await updateDoc(docRef, {
-
-                "estado": "publicado",
-                "fecha": new Date()
-            });
-
-            console.log('publicado!');
-            let element = document.getElementById("miModal");
-            element.classList.add("ver");
-
-            /*let element2 = document.getElementById("buttonModal");
-            element2.onclick = () => { history.push(0) }
-            let element3 = document.getElementById("closeModal");
-            element3.onclick = () => { history.push(0) };*/
-
-        } catch (err) {
-            console.log(err);
-            alert(err);
-        }
-    }
-
-    const setearCarrousel = async (articleID, nextChecked) => {
-        //console.log("nextChecked?", nextChecked);
-        //console.log("articleID?", articleID);
-        const docRef = doc(db, "articles", articleID);
-
-        try {
-            await updateDoc(docRef, {
-
-                "carrousel": nextChecked
-            });
-
-        } catch (err) {
-
-            console.log(err);
-            alert(err);
-        }
-    }
 
     const value = useMemo(() => {
         return ({
@@ -193,18 +113,17 @@ export function UserAuthContextProvider(props) {
             logIn,
             logOut,
             signUp,
-            generateID,
-            guardarBorrador,
-            setearCarrousel,
-            eliminarArticulo,
-            revisarArticulo,
-            publicarArticulo,
             checkAdmin,
             permisos,
+            destinatarios,
+            iberoamerica,
+            codigosPlan,
+            verify,
             admin,
+            userNIVEL,
         })
 
-    }, [user])
+    }, [user,userNIVEL])
 
 
     return <userAuthContext.Provider value={value} {...props} />

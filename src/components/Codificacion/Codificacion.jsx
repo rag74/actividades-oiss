@@ -18,7 +18,9 @@ function Codificacion() {
             </div>
             <p>---</p>
             <div className='headRow'>
-            <span className='code'>1.1.1.2</span><span>Mayores. Actividades sin impacto externo</span>
+            <span className='code'>1.1.1.2</span><span>Mayores. Actividades sin imp
+               
+               acto externo</span>
             </div>
             <p>---</p>
        </div> 

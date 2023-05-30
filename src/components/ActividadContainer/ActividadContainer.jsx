@@ -1,19 +1,20 @@
 import React, { useState , useEffect } from "react";
-import {useUserAuth} from '../context/UserAuthContext';
+import './ActividadContainer.css';
+import {useUserAuth} from '../../context/UserAuthContext';
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import { useParams , useNavigate} from "react-router-dom";
+import Actividad from "../Actividad/Actividad";
 
-import { useParams } from "react-router-dom";
 
-
-function Hola({user,userNIVEL}) {
+function ActividadContainer({user,userNIVEL}) {
 
   const {admin} = useUserAuth();
   const {REG} = useParams()
+  const navigate = useNavigate()
 
     const nivelUsuarioS = JSON.parse(localStorage.getItem('nivelUsuario'));
 
-    
-    console.log("hola mundo")
+    console.log("ActividadContainer")
     console.log(user)
     console.log(user.uid)
     console.log(userNIVEL)
@@ -27,18 +28,21 @@ function Hola({user,userNIVEL}) {
       
     }, [])
     
-
+    const goBack = () => {
+      navigate(-1);}
 
 
     return (
       <>
     { autorizado ?
-      <div className="">
-        <h1>hola mundo</h1>
+      <div className="contenedor">
+        <h1>ActividadContainer</h1>
+        <Actividad nivelUsuarioS = {nivelUsuarioS} />
       </div>
       :
-      <div className="">
-        <h2>NO ESTA AUTORIZADO</h2>
+      <div className="contenedor noAutorizado">
+        <h3>USUARIO NO AUTORIZADO</h3>
+        <i class="fa-solid fa-circle-left" onClick={goBack}></i>
       </div>
     }
       </>
@@ -46,4 +50,4 @@ function Hola({user,userNIVEL}) {
     );
   }
 
-  export default Hola;
+  export default ActividadContainer;

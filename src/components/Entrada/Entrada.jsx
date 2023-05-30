@@ -1,12 +1,10 @@
 import React from 'react'
 import "./Entrada.css"
-import { useNavigate , Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function Entrada() {
 
- const navigate = useNavigate();
 
- const handleEntrar = ()=> navigate("/panel");
 
   return (
     <div className='fondoingreso'>
