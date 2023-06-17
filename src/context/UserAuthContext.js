@@ -10,8 +10,11 @@ import { auth } from "../firebase/index";
 import { doc, setDoc, updateDoc, getDoc } from '@firebase/firestore';
 import db from '../firebase';
 import { permisos } from "../data/permisos";
-import { destinatarios , iberoamerica, codigosPlan} from "../data/webdata";
+import { destinatarios , iberoamerica, codigosPlan, OISSCentro} from "../data/webdata";
 import {verify} from "../data/verificar"
+import { generarFicha } from "../data/generarFicha";
+import { prellenar } from "../data/prellenar";
+import { arrayToCsv } from "../data/arrayToCsv";
 
 const userAuthContext = React.createContext();
 
@@ -103,7 +106,36 @@ export function UserAuthContextProvider(props) {
     }
 
     ////////////////////////////////////////////////////////
+
+
+    const guardarFicha = async (ficha) => {
+
+        try {
+            await setDoc(doc(db, "repositorioFichas", ficha.id+'-'+ficha.creado), ficha);
+            console.log('subido!');
+            //let element = document.getElementById("miModal");
+            //element.classList.add("ver");  
+            console.log("Ficha dentro de guardarFicha", ficha);
+        } catch (err) {
+
+            console.log(err);
+            alert(err);
+        }
+
+    }
  
+    // Function to download the generated CSV as a .csv file.
+    const download = (data, fileName) => {
+        const blob = new Blob([data], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', fileName + '.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+       };
 
 
     const value = useMemo(() => {
@@ -118,7 +150,13 @@ export function UserAuthContextProvider(props) {
             destinatarios,
             iberoamerica,
             codigosPlan,
+            OISSCentro,
             verify,
+            generarFicha,
+            guardarFicha,
+            prellenar,
+            arrayToCsv,
+            download,
             admin,
             userNIVEL,
         })

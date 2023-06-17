@@ -21,7 +21,7 @@ const gotoHandle= (center,destino)=>{
       <button className='buttonViñeta' disabled={userLevels.nivel == 3 ? true : false} onClick={()=>gotoHandle(userLevels.region , "presup" )}>
         Listado Actividades/Presupuesto
       </button>
-      <button className='buttonViñeta' disabled={userLevels.nivel == 3 ? true : false} onClick={()=>gotoHandle(userLevels.region , "activ" )}>
+      <button className='buttonViñeta' onClick={()=>gotoHandle(userLevels.region , "activ" )}>
         Solo actividades realizadas
       </button>
       <button className='buttonViñeta' onClick={()=>gotoHandle(userLevels.region , "nocod" )}>

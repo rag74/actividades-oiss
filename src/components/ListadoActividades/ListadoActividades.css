@@ -1,0 +1,128 @@
+.panel-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+a {
+  text-decoration: none;  
+}
+
+
+
+.buttonNew {
+    background-color: #258fdb;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    line-height: 25px;
+    margin: 5px;
+    padding: 5px 15px;
+    text-align: center;
+}
+
+.buttonNew:hover {
+    cursor: pointer;
+    background-color: #25a3fe;
+}
+
+/*///// FILA LISTADOS////*/
+.headRow,.fileRow{
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 14px;
+}
+.headRow {
+    background-color: #f5f5f5;
+}
+
+.fileRow {
+ font-size: 13px;
+ border-bottom: solid 1px black;
+}
+
+
+.headRow span {
+    text-align: center;
+    font-weight: bold;
+    width: 10%;
+}
+
+div.panel span{
+    font-size: 13px;
+}
+span.titulo {
+    width: 30%;
+}
+
+
+span.auto {
+    width: 18%;
+    text-align: center;
+}
+
+span.editor1 {
+    width: 18%;
+    text-align: center;
+    overflow: hidden;
+}
+
+span.fecha {
+    width: 8%;
+    text-align: center;
+}
+
+span.estado {
+    width: 10%;
+    text-align: center;
+}
+
+span.carrusel {
+    width: 6%;
+    text-align: center;
+}
+
+span.accion {
+    width: 10%;
+    text-align: center;
+}
+
+.buttonRow:hover {
+    cursor: pointer;
+}
+
+.badjeRow {
+    padding: 3px;
+    border-radius: 7px;
+    
+    color: #fff;
+    width:fit-content;
+    margin: auto;
+    font-size: 11px;
+    line-height: 12px;
+}
+
+.blue {
+    background-color: #258fdb;
+}
+
+.pink {
+    background-color: #fab3c2;
+    /*color:#fff*/
+}
+
+.black {
+    background-color: #000000;
+}
+
+.green {
+    background-color: #299849;
+    
+}
+
+.aliceBlue {
+    background-color: aliceblue;
+}

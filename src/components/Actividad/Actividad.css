@@ -4,6 +4,8 @@
     display: flex;
     padding: 10px;
     flex-direction: column;
+    max-width: 900px;
+    min-width: 680px;
 }
 
 .actividad input {
@@ -114,11 +116,21 @@ display: flex;
     justify-content: flex-start;
 }
 
+#participantes {
+    display: flex;
+    flex-direction: column;
+}
+
+#ponentes {
+    display: flex;
+    flex-direction: column;
+}
 .subParticipantes {
     display: flex;
     color: black;
     flex-direction: column;
     }
+
 
 
 /*//////////*/
@@ -155,8 +167,15 @@ display: flex;
     padding: 8px;
 }
 
+/*////TEXTAREA///////*/
 
+textarea {
+    white-space: pre-wrap;
+    font-size: 15px;
+    font-family: inherit;
+}
 
+/*///////////*/
 .w10 {
     width: 10%;
    }
@@ -190,8 +209,66 @@ display: flex;
    }
    
    .pl-5 {
-     padding-left: 5px;
+    padding-left: 5px;
+  }
+   
+   .pl-10 {
+     padding-left: 10px;
    }
+
+   .pr-10 {
+    padding-right: 10px;
+}
+
+.mr-0 {
+    margin-right: 0 !important
+}
+
+.ml-0 {
+    margin-left: 0 !important
+}
+
+.mr-5 {
+    margin-right: 5px;
+}
+
+.ml-5 {
+    margin-left: 5px;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.mb-5 {
+    margin-bottom: 5px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.blue {
+    background-color: #258fdb;
+}
+
+.pink {
+    background-color: #fab3c2;
+    /*color:#fff*/
+}
+
+.black {
+    background-color: #000000;
+}
+
+.green {
+    background-color: #299849;
+    
+}
 
    .selectPlan {
     margin-top: 3px;
@@ -199,3 +276,8 @@ display: flex;
     max-width: 340px;
    }
    
+   .error-class {
+    border: solid red 2px;
+    background-color: #fffbfb;
+
+   }

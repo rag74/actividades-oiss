@@ -1,32 +1,46 @@
 import { useEffect, useState } from "react"
 import './Actividad.css'
 import { useUserAuth } from "../../context/UserAuthContext"
+import { useParams , useNavigate} from "react-router-dom";
 
-function Actividad({nivelUsuarioS}) {
+function Actividad({nivelUsuarioS, user, REG, recupero,loading}) {
+   
+  
+
+  const {destinatarios,iberoamerica,codigosPlan,OISSCentro, verify, generarFicha, guardarFicha, prellenar} = useUserAuth()
+  console.log("IMPORTACIONES ACTIVIDAD")
+
+  const navigate = useNavigate()
 
   const [tipo, setearTipo] = useState("") 
   const [organizador, setearOrganizador] = useState("")
-  
-
-  var arr = []
-  const {destinatarios,iberoamerica,codigosPlan, verify} = useUserAuth()
-  console.log("DESTINATARIOS")
-  console.log(destinatarios)
-  console.log(iberoamerica)
-  console.log(codigosPlan)
-
   const [ponentes, setPonentes] = useState()
   const [participantes, setParticipantes] = useState()
 
   const [textareaheight, setTextareaheight] = useState(10); 
+  var arr = []
   
 
+
+
+  useEffect(() => {
+    if (recupero!=null){
+        prellenar(recupero,setearTipo)
+        contarPartPone("part", "partTotal")
+        contarPartPone("pone", "poneTotal")
+    }
+  }, [recupero])
+  
+  
   useEffect(() => {
     var elem = document.getElementById("SUBtipo");
     if (tipo !== ""){
         elem.classList.remove("none")
     } else {elem.classList.add("none")}
   }, [tipo])
+
+  const goBack = () => {
+    navigate(-1);}
 
 
   const publicoDestinatario = destinatarios.map(item => (
@@ -55,8 +69,8 @@ const handleFinalDate = (e)=> {
 //**/// ORGANIZADOR - SETEAR CENTRO 
 const handleCentro = (e)=> {
     if (e == "OISS" ) {
-       console.log(nivelUsuarioS.centro) 
-       document.getElementById("organizadorDetalle").value = nivelUsuarioS.centro
+       console.log(OISSCentro[REG]) 
+       document.getElementById("organizadorDetalle").value = OISSCentro[REG]
        document.getElementById("organizadorDetalle").readOnly = true
     } else {
         document.getElementById("organizadorDetalle").readOnly = false
@@ -79,12 +93,13 @@ const handleTransversales = (value)=> {
 
 }
 
-//*//// EXTENDER TEXTAREA AUTOMATICO//////
+//*//// EXTENDER TEXTAREA AUTOMATICO////// 
+
    function handleChange(event) { 
         const height = event.target.scrollHeight; 
         const rows = event.target.rows; 
-        const rowHeight = 15; 
-        const trows = Math.ceil(height / rowHeight) - 2; 
+        const rowHeight = 20; 
+        const trows = Math.ceil(height / rowHeight) - 1; 
         console.log(height, rows, trows);  
 
         if (trows > rows) { 
@@ -94,6 +109,7 @@ const handleTransversales = (value)=> {
             
         } 
   } 
+
 
 //CREAR ARRAYS DEL CHECKBOX
 const contar = ()=>{
@@ -116,33 +132,53 @@ const contarPartPone = (clase, final)=> {
     console.log(arr)
     document.getElementById(final).value=count;
 
-    if (clase == "pone"){setPonentes(arr)} else (setParticipantes(arr))
+    if (clase === "pone"){setPonentes(arr)} else (setParticipantes(arr))
 }
 
 const handleCont = (ev)=> {console.log(ev)}
 
-const handleSubir = (ponentes, participantes)=> {
+
+const handleSubir = async (ponentes, participantes, tiposubida)=> {
     
-    verify(ponentes, participantes)
-    var a = verify()
-    //if (a == 1){console.log("todo perfecto")}else{console.log("todo mal")}
-    console.log(verify())
+    var ficha = generarFicha(ponentes, participantes, tiposubida, user, REG, recupero)
+    var verificar = verify(ficha)
+    if (verificar != "OK") {alert(verificar)}
+
+    if (verificar === "OK") {
+        await guardarFicha(ficha)
+        alert("el borrador ha sido guardado correctamente")
+        console.log(ficha)
+    }
 }
+
+const removeError = e => {
+    console.log(e.target)
+    console.log(e.target.classList.value)
+    if (e.target.classList.value.indexOf("error-class") || e.target.classList.value == "error-class"){e.target.classList.remove("error-class")}
+    const parentDiv = e.target.parentElement;
+    const grandparentDiv = parentDiv.parentElement
+    grandparentDiv.classList.remove("error-class");
+  };
+
+
+  
     
   return (
-    <div className="contenedor actividad"> 
-
-        <h3>Información general</h3>
+     
+    <div className="contenedor actividad">
+        {loading ? <h1>Cargando...</h1> : 
+        <>
+        <h3>Información general</h3> 
 
         <label for="titulo">Título de la actividad</label>
-        <input type="text" name="titulo" id="titulo" onBlur={(e)=>{}}/>
+        <input type="text" name="titulo" id="titulo" onBlur={removeError} />
 
         <div className="separador"/>
 
         <div className="tipologia">
             <div className="subTipologia" id="">
                 <label htmlFor="tipo" className="">Tipo</label>
-                <select name="tipo" id="tipo" className="tipoOne" onChange={(e)=> {setearTipo(e.target.value)}}>
+                <select name="tipo" id="tipo" className="tipoOne" onChange={(e)=> {setearTipo(e.target.value)}} onBlur={removeError} >
                     <option value="">Elija un tipo de actividad</option>
                     <option value="A">Asesoramiento</option>
                     <option value="C">Comunicación</option>
@@ -153,13 +189,13 @@ const handleSubir = (ponentes, participantes)=> {
             </div>
             <div className="subTipologia none" id="SUBtipo">
                 <label htmlFor="subtipo" className="">Subtipo</label>
-                <select name="subtipo" id="subtipo" className="" onChange={(e)=> {}} >
+                <select name="subtipo" id="subtipo" className="" onChange={(e)=> {}} onBlur={removeError} >
                     
-                    { tipo == "A" && 
+                    {tipo == "A" && 
                         <> 
                         <option value="">Elija un subtipo</option>
                         <option value="Asistencia técnica">Asistencia técnica</option>
-                        <option value="OtrosC">Otros</option>
+                        <option value="Otros">Otros</option>
                         </>
                     }
 
@@ -232,7 +268,7 @@ const handleSubir = (ponentes, participantes)=> {
         <div className="formato">
             <div className="subFormato">
                 <label htmlFor="formatoTipo" className="">Formato</label>
-                <select name="formatoTipo" id="formato" className="" onChange={(e)=> {}}>
+                <select name="formatoTipo" id="formato" className="" onChange={(e)=> {}} onBlur={removeError} >
                         <option value="">Elija un elemento</option>
                         <option value="Presencial">Presencial</option>
                         <option value="Virtual sincrónica">Virtual sincrónica</option>
@@ -242,19 +278,19 @@ const handleSubir = (ponentes, participantes)=> {
             </div>
             <div className="subFormato small">
                 <label htmlFor="formatoFecha" className="">Inicio</label>
-                <input type="date" id="fechainicio" name="" onChange={(e)=>handleFinalDate(e.target.value)}></input>
+                <input type="date" id="fechainicio" name="" onChange={(e)=>handleFinalDate(e.target.value)} onBlur={removeError} ></input>
             </div>
             <div className="subFormato small">
                 <label htmlFor="formatoFecha" className="">Final</label>
-                <input type="date" id="fechafinal" name="" onChange={(e)=> {}}></input>
+                <input type="date" id="fechafinal" name="" onChange={(e)=> {}} onBlur={removeError} ></input>
             </div>
             <div className="subFormato w50 pr-5">
              <label htmlFor="localidad" className="">Localidad</label>
-             <input type="text" name="localidad" id="localidad" onBlur={(e)=>{}}/>
+             <input type="text" name="localidad" id="localidad" onBlur={removeError}/>
             </div>
             <div className="subFormato w50 pr-5">
                 <label htmlFor="país" className="">País</label>
-                <select name="país" id="país" className="" onChange={(e)=> {}}>
+                <select name="país" id="país" className="" onChange={(e)=> {}} onBlur={removeError} >
                     <option value="">Elija un elemento</option>
                     {paisesIberoamericanos}
                 
@@ -268,7 +304,7 @@ const handleSubir = (ponentes, participantes)=> {
         <div className="organiza">
             <div className="subOrganiza w40">
                 <label htmlFor="organizador" className="">Organiza</label>
-                <select name="organizador" id="organizador" className="" onChange={(e)=>{handleCentro(e.target.value)}}>
+                <select name="organizador" id="organizador" className="" onChange={(e)=>{handleCentro(e.target.value)}} onBlur={removeError} >
                         <option value="">Elija un elemento</option>
                         <option value="OISS">OISS</option>
                         <option value="Otra entidad (especifique) ">Otra entidad (especifique) </option>
@@ -277,17 +313,17 @@ const handleSubir = (ponentes, participantes)=> {
 
             <div className="subOrganiza fill">
                 <label htmlFor="masDetalle" className="">Más detalles</label>
-                <input type="text" name="masDetalle" id="organizadorDetalle" onBlur={(e)=>{}}/>
+                <input type="text" name="masDetalle" id="organizadorDetalle" onBlur={removeError} />
             </div>
 
             <div className="subOrganiza w50">
                 <label htmlFor="cofinanciadora" className="">Entidad co-financiadora</label>
-                <input type="text" name="cofinanciadora" id="cofinanciadora" onBlur={(e)=>{}}/>
+                <input type="text" name="cofinanciadora" id="cofinanciadora" onBlur={removeError} />
             </div>
 
             <div className="subOrganiza fill">
                 <label htmlFor="enlaceActividad" className="">Enlace de la actividad</label>
-                <input type="text" name="enlaceActividad" id="enlaceActividad" onBlur={(e)=>{}}/> 
+                <input type="text" name="enlaceActividad" id="enlaceActividad" onBlur={removeError} /> 
             </div>
             
         </div>
@@ -296,18 +332,19 @@ const handleSubir = (ponentes, participantes)=> {
 
         <h3>Información complementaria</h3>
             <p>Publico destinantario</p>
-            <div className="publico">
+            <div className="publico" id="publico" onClick={(e)=>{removeError(e)}}>
                 
                 {publicoDestinatario}
         
             </div>
-             <button onClick={contar}>contar</button>
+
             <div className="separador"/>
 
         <div className="participantes">
             
             <div className="subParticipantes w50">
             <p>Nro. de participantes</p>
+             <div id="participantes" onClick={(e)=>{removeError(e)}}>
                 <label for="partMujeres">
                     <input type="number" name="part" id="partMujeres" min="0" defaultValue="0" className="nroPart w20" onChange={(e)=> {contarPartPone("part", "partTotal")}}/> Nro. de mujeres
                 </label>
@@ -318,11 +355,13 @@ const handleSubir = (ponentes, participantes)=> {
                     <input type="number" name="part" id="partOtros" min="0" defaultValue="0" className="nroPart w20" onChange={(e)=> {contarPartPone("part", "partTotal")}}/> Nro. de otros
                 </label>
                 <label for="partTotal">
-                    <input type="number" name="partTotal" id="partTotal" className="w20" disabled/> Total
+                    <input type="number" name="partTotal" id="partTotal" className="w20" disabled onChange={removeError}/> Total
                 </label>
+             </div>
             </div>
-            <div className="subParticipantes w50">
+            <div className="subParticipantes w40 ml-10">
                 <p>Nro. de ponentes</p>
+                <div id="ponentes" onClick={(e)=>{removeError(e)}}>
                 <label for="ponentesMujeres">
                     <input type="number" name="pone" id="ponentesMujeres" min="0" defaultValue="0" className="nroPone w20" onChange={(e)=> {contarPartPone("pone", "poneTotal")}}/> Nro. de mujeres
                 </label>
@@ -333,8 +372,9 @@ const handleSubir = (ponentes, participantes)=> {
                     <input type="number" name="pone" id="ponentesOtros" min="0" defaultValue="0" className="nroPone w20" onChange={(e)=> {contarPartPone("pone", "poneTotal")}}/> Nro. de otros
                 </label>
                 <label for="ponentesTotal">
-                    <input type="number" name="poneTotal" id="poneTotal" className="w20" disabled/> Total
+                    <input type="number" name="poneTotal" id="poneTotal" className="w20" disabled onChange={removeError}/> Total
                 </label>
+                </div>
             </div>
 
         </div>   
@@ -344,13 +384,14 @@ const handleSubir = (ponentes, participantes)=> {
         <div className="enfoque">
             <div className="subEnfoque w50">
                 <p>Contribución al Plan Estratégico 2020-2023</p>
-                <select name="contPlan" id="planEstratégico" onChange={(ev)=> {handleCont(ev.target.value)}} className="selectPlan"  >
+                <select name="contPlan" id="planEstratégico" className="selectPlan" onChange={(ev)=> {handleCont(ev.target.value)}} onClick={removeError} >
                     <option value="">Elija un elemento</option>
                     {contribuciones}
                 </select>
                 <div className="separador"/>
                 <p>Enfoques transversales</p>
-                <div className="subSubEnfoque">
+                <div id="enfoque" onClick={(e)=>{removeError(e)}}>
+                <div className="subSubEnfoque" >
                 <input type="checkbox" id="Enfoque de Derechos Humanos" name="transversales" value="Enfoque de Derechos Humanos" onChange={(e)=>{handleTransversales(e.target.value)}} />
                 <label htmlFor="Enfoque de Derechos Humanos">Enfoque de Derechos Humanos</label>
                 </div>
@@ -366,46 +407,49 @@ const handleSubir = (ponentes, participantes)=> {
                 <input type="checkbox" id="Huella de carbono reducida" name="transversales" value="Huella de carbono reducida" onChange={(e)=>{handleTransversales(e.target.value)}}/>
                 <label htmlFor="Huella de carbono reducida">Huella de carbono reducida</label>
                 </div>
+                </div>
             </div>
-            <div className="subEnfoque w50">
+            <div className="subEnfoque w50 pl-10">
                 <p>Fuentes de verificación adjuntadas:</p>
-                <div className="subSubEnfoque">
-                <input type="checkbox" id="Encuestas" name="fuentes" value="Encuestas" />
-                <label htmlFor="Encuestas">Encuestas</label>
-                </div>
-                <div className="subSubEnfoque">
-                <input type="checkbox" id="Fotografías" name="fuentes" value="Fotografías"/>
-                <label htmlFor="Fotografías">Fotografías</label>
-                </div>
-                <div className="subSubEnfoque">
-                <input type="checkbox" id="Informes" name="fuentes" value="Informes"/>
-                <label htmlFor="Informes">Informes</label>
-                </div>
-                <div className="subSubEnfoque">
-                <input type="checkbox" id="Listado asistencia" name="fuentes" value="Listado asistencia"/>
-                <label htmlFor="Listado asistencia">Listado asistencia</label>
-                </div>
-                <div className="subSubEnfoque">
-                <input type="checkbox" id="Material gráfico y/o impreso" name="fuentes" value="Material gráfico y/o impreso"/>
-                <label htmlFor="Material gráfico y/o impreso">Material gráfico y/o impreso</label>
-                </div>
-                <div className="subSubEnfoque">
-                <input type="checkbox" id="Nota de prensa" name="fuentes" value="Nota de prensa"/>
-                <label htmlFor="Nota de prensa">Nota de prensa</label>
-                </div>
-                <div className="subSubEnfoque">
-                <input type="checkbox" id="Programa" name="fuentes" value="Programa"/>
-                <label htmlFor="Programa">Programa</label>
-                </div>
-                <div className="subSubEnfoque">
-                <input type="checkbox" id="Vaciado de prensa" name="fuentes" value="Vaciado de prensa"/>
-                <label htmlFor="Vaciado de prensa">Vaciado de prensa</label>
+                <div id="fuentes" onClick={(e)=>{removeError(e)}}>
+                    <div className="subSubEnfoque">
+                    <input type="checkbox" id="Encuestas" name="fuentes" value="Encuestas" />
+                    <label htmlFor="Encuestas">Encuestas</label>
+                    </div>
+                    <div className="subSubEnfoque">
+                    <input type="checkbox" id="Fotografías" name="fuentes" value="Fotografías"/>
+                    <label htmlFor="Fotografías">Fotografías</label>
+                    </div>
+                    <div className="subSubEnfoque">
+                    <input type="checkbox" id="Informes" name="fuentes" value="Informes"/>
+                    <label htmlFor="Informes">Informes</label>
+                    </div>
+                    <div className="subSubEnfoque">
+                    <input type="checkbox" id="Listado asistencia" name="fuentes" value="Listado asistencia"/>
+                    <label htmlFor="Listado asistencia">Listado asistencia</label>
+                    </div>
+                    <div className="subSubEnfoque">
+                    <input type="checkbox" id="Material gráfico y/o impreso" name="fuentes" value="Material gráfico y/o impreso"/>
+                    <label htmlFor="Material gráfico y/o impreso">Material gráfico y/o impreso</label>
+                    </div>
+                    <div className="subSubEnfoque">
+                    <input type="checkbox" id="Nota de prensa" name="fuentes" value="Nota de prensa"/>
+                    <label htmlFor="Nota de prensa">Nota de prensa</label>
+                    </div>
+                    <div className="subSubEnfoque">
+                    <input type="checkbox" id="Programa" name="fuentes" value="Programa"/>
+                    <label htmlFor="Programa">Programa</label>
+                    </div>
+                    <div className="subSubEnfoque">
+                    <input type="checkbox" id="Vaciado de prensa" name="fuentes" value="Vaciado de prensa"/>
+                    <label htmlFor="Vaciado de prensa">Vaciado de prensa</label>
+                    </div>
                 </div>
             </div>
         </div>
         <div className="separador"/>
         <p>Descripción de la actividad realizada:</p>
-        <textarea name="textarea" rows={textareaheight} width="100%" onChange={handleChange} className="textDesc" id="descripción" placeholder="
+        <textarea name="textarea" rows={textareaheight} width="100%" onChange={handleChange} onBlur={removeError} className="textDesc" id="descripción" placeholder="
         - Breve contextualización de la actividad (qué ha motivado su realización)
 
         - Objetivos de la actividad 
@@ -414,9 +458,23 @@ const handleSubir = (ponentes, participantes)=> {
             >
         </textarea>
         <div className="separador"/>
-        <button onClick={()=>handleSubir(ponentes, participantes)}>ENVIAR</button>
-    </div>
-    )
+        
+        <div className="buttonControls">
+           { !recupero &&
+            <button className="mr-5" onClick={()=>handleSubir(ponentes, participantes, "publicada")}>Guardar</button>}
+
+            { recupero && 
+            <>
+            <button className="mr-5" onClick={()=>handleSubir(ponentes, participantes, "publicada")}>Guardar cambios</button>
+            <button className="mr-5 pink" onClick={()=>{}}>Eliminar</button>
+            </>
+            }
+            <button className="mr-5"onClick={goBack}>Salir sin guardar</button>
+            
+        </div>
+        </>}
+    </div>            
+  )
 }
 
 export default Actividad

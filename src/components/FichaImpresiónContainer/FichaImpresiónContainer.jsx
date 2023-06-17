@@ -1,14 +1,14 @@
 import React, { useState , useEffect } from "react";
-import './ActividadContainer.css';
+import './FichaImpresiónContainer.css';
 import {useUserAuth} from '../../context/UserAuthContext';
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { useParams , useNavigate} from "react-router-dom";
-import Actividad from "../Actividad/Actividad";
+import FichaImpresión from "../FichaImpresión/FichaImpresión";
 import db from '../../firebase';
 import SkeletonFicha from "../SkeletonFicha/SkeletonFicha";
 
 
-function ActividadContainer({user,userNIVEL}) {
+function FichaImpresiónContainer({user,userNIVEL}) {
 
   const {admin} = useUserAuth();
   const {REG, ID} = useParams()
@@ -59,14 +59,8 @@ function ActividadContainer({user,userNIVEL}) {
       <>
       {loading ? <SkeletonFicha/> 
               :
-                autorizado ? 
                 <div className="contenedor">
-                  <Actividad nivelUsuarioS = {nivelUsuarioS} user = {user} REG = {REG} recupero = {recupero} loading ={loading}/>
-                </div>
-                :
-                <div className="contenedor noAutorizado">
-                  <h3>USUARIO NO AUTORIZADO</h3>
-                  <i class="fa-solid fa-circle-left" onClick={goBack}></i>
+                  <FichaImpresión nivelUsuarioS = {nivelUsuarioS} user = {user} REG = {REG} recupero = {recupero} loading ={loading}/>
                 </div>
         }
   
@@ -75,4 +69,4 @@ function ActividadContainer({user,userNIVEL}) {
     );
   }
 
-  export default ActividadContainer;
+  export default FichaImpresiónContainer;

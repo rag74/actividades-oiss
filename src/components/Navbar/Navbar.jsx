@@ -26,7 +26,7 @@ function Navbar() {
     <header className='header'>
       <div className='contenedor'>
           <div className='navcontainer'>
-            <Link to="/">  
+            <Link to="/panel">  
               <img src="/img/logochico.png" alt="Logo OISS" className='logooiss'/>
             </Link> 
             <div className='userlog'>

@@ -1,0 +1,159 @@
+.ficha {
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    max-width: 700px;
+    min-width: 680px;
+    margin: auto;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 30px;
+}
+
+.ficha h1 {
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4472C4;
+    font-size: 34.5px;
+
+}
+
+.ficha-info {
+    font-weight: 100;
+    text-align: center;
+    background-color: #BEE395;
+    color: #4472C4;
+    font-size: 24px;
+    padding: 3px;
+    border: solid 0.5px rgb(224, 224, 224);
+}
+
+
+.ficha-fila-standard {
+    min-height: 40px;
+    border: solid 0.5px rgb(224, 224, 224);;
+    border-top: 0;
+    display: flex;
+    /*align-items: center;*/
+}
+
+.ficha-colPrincipal {
+    width: 20%;
+    min-width: 155px;
+    padding: 3px 7px;
+    font-family: "Arial",sans-serif;
+    color: #0070C0;
+    font-size: 14.6px;
+    font-weight: 600;
+    border-right: solid 0.5px rgb(224, 224, 224);;
+    min-height: 40px;
+    
+}
+
+.ficha-col {
+    padding: 3px 7px;
+    font-family: "Arial",sans-serif;
+    font-size: 14.6px;
+    font-weight: 200;
+    
+}
+
+.pc10 {
+    width: 10%;
+}
+
+.pc15 {
+    width: 15%;
+}
+
+.pc20 {
+    width: 20%;
+}
+
+.pc30 {
+    width: 30%;
+}
+
+.pc40 {
+    width: 40%;
+}
+
+.pc50 {
+    width: 50%;
+}
+
+.pc60 {
+    width: 50%;
+}
+
+.pc100 {
+    width: 100%;
+}
+
+
+.bl {
+    border-left: solid 0.5px rgb(224, 224, 224);;
+}
+
+.br {
+    border-right: solid 0.5px rgb(224, 224, 224);;
+}
+
+
+.bb {
+    border-bottom: solid 0.5px rgb(224, 224, 224);;
+}
+
+.remains {
+    flex-grow: 100;
+}
+
+
+
+.textc {
+    text-align: center;
+}
+
+.light-blue {
+ background-color:#DEEAF6
+}
+
+
+.pl5 {
+  padding-left: 5px;
+}
+.pt5 {
+    padding-top: 5px;
+  }
+
+.pt3 {
+    padding-top: 3px;
+  }
+
+.c {
+    display: flex;
+    /*align-items: center;*/
+    padding: 3px;
+}
+
+.ch {
+    justify-content: center;
+}
+
+.mt-3 {
+    margin-top: 3px
+}
+
+.ft {
+ display: flex;
+}
+
+
+.p0 {
+    padding: 0;
+   }
+
+.ai {
+    align-items: center;
+
+}
