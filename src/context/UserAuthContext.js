@@ -10,7 +10,7 @@ import { auth } from "../firebase/index";
 import { doc, setDoc, updateDoc, getDoc } from '@firebase/firestore';
 import db from '../firebase';
 import { permisos } from "../data/permisos";
-import { destinatarios , iberoamerica, codigosPlan, OISSCentro} from "../data/webdata";
+import { destinatarios , iberoamerica, codigosPlan, OISSCentro, OISSViñetas} from "../data/webdata";
 import {verify} from "../data/verificar"
 import { generarFicha } from "../data/generarFicha";
 import { prellenar } from "../data/prellenar";
@@ -151,6 +151,7 @@ export function UserAuthContextProvider(props) {
             iberoamerica,
             codigosPlan,
             OISSCentro,
+            OISSViñetas,
             verify,
             generarFicha,
             guardarFicha,

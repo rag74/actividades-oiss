@@ -3,7 +3,6 @@ import './PanelUserContainer.css';
 import {useUserAuth} from '../../context/UserAuthContext';
 import db from "../../firebase";
 import { collection, query, getDoc, getDocs, where, doc } from 'firebase/firestore';
-import PanelAdmin from '../PanelAdmin/PanelAdmin'
 import PanelUser from '../PanelUser/PanelUser'
 import MyLoader from "../Loaders/MyLoader";
 
@@ -60,11 +59,7 @@ function PanelUserContainer ({user,userNIVEL}) {
         :
 
           <div className="panel">
-          { userLevels.administrador ?
-              <PanelAdmin userLevels={userLevels} user={user}/>  
-              :
-              <PanelUser userLevels={userLevels} user={user}/>
-          }
+              <PanelUser userLevels={userLevels} user={user}/>  
           </div>
       }
       </div>
@@ -72,3 +67,13 @@ function PanelUserContainer ({user,userNIVEL}) {
   }
 
   export default PanelUserContainer;
+
+
+  /*
+            { userLevels.todo ?
+              <PanelAdmin userLevels={userLevels} user={user}/>  
+              :
+              <PanelUser userLevels={userLevels} user={user}/>
+          }
+
+  */

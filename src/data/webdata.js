@@ -1,6 +1,6 @@
 export const destinatarios = ['Asesores/as','Docentes academia,Estudiantes','Personal instituciones públicas','Personal entidades sin ánimo de lucro','Personal experto','Personal OISS','Personal organismos internacionales','Personal sector privado','Público en general',
 'Representantes gubernamentales','Representantes instituciones miembros de la OISS','Representantes instituciones públicas','Representantes organismos internacionales','Representantes sector privado']
-
+ 
 export const iberoamerica =['Argentina','Bolivia','Brasil','Chile','Colombia','Costa Rica','Cuba','Ecuador','El Salvador','España','Guatemala','Honduras','México','Nicaragua','Panamá','Paraguay','Perú','Portugal','Puerto Rico','República Dominicana','Uruguay','Venezuela']
 
 export const OISSCentro = { "SG":"SG Secretaría General",
@@ -15,6 +15,17 @@ export const OISSCentro = { "SG":"SG Secretaría General",
                             "CIEF":"CIEF"
                             }
                             
+export const OISSViñetas = [{"sigla":"SG","centro":"SG Secretaría General"},
+                            {"sigla":"CRCAC","centro":"CR Centro América y Caribe"},
+                            {"sigla":"CRCZA","centro":"CR Colombia y Zona Andina"},
+                            {"sigla":"CRCS","centro":"CR Cono Sur"},
+                            {"sigla":"DBOL","centro":"DL Bolivia"},
+                            {"sigla":"DCHI","centro":"DL Chile"},
+                            {"sigla":"DBRA","centro":"DL Brasil"},
+                            {"sigla":"DPAR","centro":"DL Paraguay"},
+                            {"sigla":"DDOM","centro":"DL República Dominicana"},
+                            {"sigla":"CIEF","centro":"CIEF"}
+                             ]
 
 export const codigosPlan = [{"cod": "1.1.1.1.","desc": "Personas adultas mayores"},
                             {"cod": "1.1.1.2.","desc": "Discapacidad"},

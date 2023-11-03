@@ -65,6 +65,7 @@ const checkCheckboxes = (ids)=>{
         checkbox.checked = true;
 
       }
+      checkbox.classList.add("noclick")
     }
   }
 
