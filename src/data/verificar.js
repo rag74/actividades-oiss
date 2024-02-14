@@ -82,6 +82,8 @@ export function verify(ficha) {
             element.classList.add("error-class");
             mensaje = "La ficha no pudo subirse. Revise el ingreso de los datos obligatorios marcados en rojo."
         }
+
+        /*// SACAR CONDICION OBLIGATORIA PARTICIPANTES Y PONENTES
         if (!ficha.participantes) {
             let element = document.getElementById("participantes");
             element.classList.add("error-class");
@@ -92,6 +94,7 @@ export function verify(ficha) {
             element.classList.add("error-class");
             mensaje = "La ficha no pudo subirse. Revise el ingreso de los datos obligatorios marcados en rojo."
         }
+        */
 
         /*// SACAR CONDICION OBLIGATORIA ENFOQUE
          if (!ficha.enfoque) {

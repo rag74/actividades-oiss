@@ -17,6 +17,13 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
    var país = document.getElementById("país").value
    var organizador = document.getElementById("organizador").value
    var organizadorDetalle = document.getElementById("organizadorDetalle").value
+   //var CodContable
+
+
+   if (organizador == "OISS") {
+        var organizadorApoya = document.getElementById("organizadorApoya").value
+        } else {var organizadorApoya = "" }   
+                                       
    var cofinanciadora = document.getElementById("cofinanciadora").value
    var enlaceActividad = document.getElementById("enlaceActividad").value
 
@@ -40,7 +47,16 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
     if (arr.length > 0) {fuentes = arr}
 
     var descripción = document.getElementById("descripción").value
-    
+
+    var período 
+    var año
+    if (fechafinal) {
+        período = new Date(fechafinal).getFullYear()
+    } else 
+    {
+         período = new Date.now().getFullYear()
+    }
+    console.log(período)
      
     let cod4 = () => {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -55,7 +71,9 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
         var editor = creador 
         var creado = Date.now()
         var modificación = creado
-        var id = REG+'23-'+cod4()
+        var año = período.toString().substr(-2)
+        var id = REG+año+'-'+cod4()
+        var CodContable = "S/C"
             } else {///cuando la ficha ya existe
         var delegación = recupero.delegación
         var creador = recupero.creador
@@ -63,9 +81,13 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
         var editor = [user.email,user.uid]
         var modificación = Date.now()
         var id = recupero.id
+        var CodContable 
+        if (recupero.CodPlanEstratégico === CodPlanEstratégico){
+            CodContable = recupero.CodContable
+            } else { 
+             CodContable = "S/C"
+            } 
         }
-
-    
 
     
 
@@ -86,6 +108,7 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
         país,
         organizador,
         organizadorDetalle,
+        organizadorApoya,
         cofinanciadora,
         enlaceActividad,
         destinatarios,
@@ -94,6 +117,7 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
         planEstratégico,
         CodPlanEstratégico,
         DescPlanEstratégico,
+        CodContable,
         enfoque,
         fuentes,
         descripción,
@@ -103,11 +127,11 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
         creado,
         editor,
         modificación,
+        período,
         id
         }
 
  
-    
 
     console.log(ficha)
     let currentDate = new Date();

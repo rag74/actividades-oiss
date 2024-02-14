@@ -7,14 +7,17 @@ import {
     onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../firebase/index";
-import { doc, setDoc, updateDoc, getDoc } from '@firebase/firestore';
+import { doc, setDoc, updateDoc, getDoc , collection } from '@firebase/firestore';
 import db from '../firebase';
 import { permisos } from "../data/permisos";
-import { destinatarios , iberoamerica, codigosPlan, OISSCentro, OISSViñetas} from "../data/webdata";
+import { destinatarios , iberoamerica, codigosPlan, OISSCentro, OISSViñetas, codigosPresupuesto} from "../data/webdata";
 import {verify} from "../data/verificar"
 import { generarFicha } from "../data/generarFicha";
 import { prellenar } from "../data/prellenar";
 import { arrayToCsv } from "../data/arrayToCsv";
+import { generarStats } from "../data/generarStats";
+import { numeroALetras } from "../data/numeroALetras";
+import { generarStatsComp } from "../data/generarStatsComp";
 
 const userAuthContext = React.createContext();
 
@@ -24,6 +27,9 @@ export function UserAuthContextProvider(props) {
     const [user, setUser] = useState("");
     const [admin, setAdmin] = useState(false);
     const [userNIVEL, setUserNIVEL] = useState("");
+
+
+    const [reload, setReload] = useState("1")
 
     var estadoUser = "";
     
@@ -113,16 +119,72 @@ export function UserAuthContextProvider(props) {
         try {
             await setDoc(doc(db, "repositorioFichas", ficha.id+'-'+ficha.creado), ficha);
             console.log('subido!');
-            //let element = document.getElementById("miModal");
-            //element.classList.add("ver");  
             console.log("Ficha dentro de guardarFicha", ficha);
         } catch (err) {
 
             console.log(err);
             alert(err);
         }
-
     }
+
+    const guardarCodigoContable = async (codigoContable,idFicha) => {
+
+        try {
+            const docRef = doc(db, "repositorioFichas", idFicha);
+            await updateDoc (docRef, codigoContable);
+            //await setDoc(doc(db, "repositorioFichas", idFicha), codigoContable);
+            setReload(codigoContable)
+            console.log('subido!');
+            console.log("Codigo Contable subido", codigoContable);
+            return true
+        } catch (err) {
+
+            console.log(err);
+            return false
+        }
+    }
+
+
+
+    const eliminarFicha = async (estadoFicha,idFicha)=>{
+
+        try {
+            const docRef = doc(db, "repositorioFichas", idFicha);
+            await updateDoc (docRef, estadoFicha);
+            //await setDoc(doc(db, "repositorioFichas", idFicha), codigoContable);
+            setReload(estadoFicha)
+            console.log('eliminada!');
+            console.log("Estado eliminada", estadoFicha);
+            return true
+        } catch (err) {
+
+            console.log(err);
+            return false
+        }
+    }
+
+    // Function para transformar datos numericos en FECHA HUMANA.
+    function timestampToDate(timestamp) {
+        const date = new Date(timestamp) 
+        // Format the date string in the desired format.
+        let day = date.getDate()
+        let month = date.getMonth();
+        month = (month + 1)
+        let year = date.getFullYear();
+
+        if (day < 10) {
+            day = '0' + day;
+        }
+        
+        if (month < 10) {
+            month = `0${month}`;
+        }
+        
+        let formattedDate = `${day}-${month}-${year}`;
+       // 23-07-2022
+
+        return formattedDate
+}
  
     // Function to download the generated CSV as a .csv file.
     const download = (data, fileName) => {
@@ -136,6 +198,7 @@ export function UserAuthContextProvider(props) {
         a.click();
         document.body.removeChild(a);
        };
+
 
 
     const value = useMemo(() => {
@@ -152,17 +215,25 @@ export function UserAuthContextProvider(props) {
             codigosPlan,
             OISSCentro,
             OISSViñetas,
+            codigosPresupuesto,
             verify,
             generarFicha,
+            generarStats,
+            generarStatsComp,
             guardarFicha,
             prellenar,
             arrayToCsv,
             download,
+            guardarCodigoContable,
+            eliminarFicha,
+            timestampToDate,
+            numeroALetras,
             admin,
             userNIVEL,
+            reload,
         })
 
-    }, [user,userNIVEL])
+    }, [user,userNIVEL,reload])
 
 
     return <userAuthContext.Provider value={value} {...props} />

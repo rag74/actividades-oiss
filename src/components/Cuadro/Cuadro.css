@@ -1,0 +1,126 @@
+.tableStyle{
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10px;
+}
+
+.cuadro {
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    max-width: 1400px;
+    min-width: 680px;
+}
+
+.c-headRow, .c-fileRow{
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 13px;
+}
+
+.c-headRow {
+    background-color: #ccd8e8;
+}
+
+.c-headRow span{
+text-align: center;
+font-weight: bold;
+}
+
+.c-fileRow {
+    font-size: 13px;
+    border-bottom: solid 1px black;
+    align-items: baseline;
+}  
+
+.c-fileRow span {
+    padding: 2px;
+}
+
+.c-codigo {
+width: 6%;
+text-align: center;
+}
+
+.c-tipo {
+    width: 8%;
+    text-align: center;
+}
+
+.c-titulo {
+    width: 12%;
+}
+
+.c-descripcion {
+    width: 37%;
+    white-space: pre-wrap;
+}
+
+
+.c-publico {
+    width: 8%;
+    white-space: pre-wrap;
+}
+
+.c-formato {
+    width: 6%;
+    text-align: center;
+}
+
+.c-organizado {
+    width: 6%;
+    text-align: center;
+}
+
+.c-personas {
+    width: 3%;
+    text-align: center;
+}
+
+.c-lugar {
+    width: 7%;
+    text-align: center;
+}
+
+.c-fecha {
+    width: 7%;
+    text-align: center;
+}
+
+.c-gray{ 
+    background-color: #b9b9b9;
+    opacity: 0.7;
+}
+
+.c-gray:hover{
+    cursor: pointer;
+    opacity: 1;
+}
+
+.c-green{ 
+    background-color: #78c47c;
+    opacity: 0.7;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.c-green:hover{
+    cursor: pointer;
+    opacity: 1;
+}
+
+.c-bl {
+    border-left: 1px solid black;
+}
+
+.c-br {
+    border-right: 1px solid black;
+}
+
+.c-bt {
+    border-top: 1px solid black;
+}

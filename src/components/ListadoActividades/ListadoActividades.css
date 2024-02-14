@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 a {
@@ -9,6 +10,13 @@ a {
 }
 
 
+.fijo-menu {
+    background-color: white;
+    padding-top: 2px;
+    position: sticky; 
+    top: 0; 
+    z-index: 999;
+}
 
 .buttonNew {
     background-color: #258fdb;
@@ -92,6 +100,7 @@ span.accion {
 
 .buttonRow:hover {
     cursor: pointer;
+    
 }
 
 .badjeRow {
@@ -105,13 +114,18 @@ span.accion {
     line-height: 12px;
 }
 
+.hov:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 .blue {
     background-color: #258fdb;
 }
 
 .pink {
     background-color: #fab3c2;
-    /*color:#fff*/
+    display: initial;
 }
 
 .black {
@@ -125,4 +139,9 @@ span.accion {
 
 .aliceBlue {
     background-color: aliceblue;
+}
+
+.fc {
+    width: fit-content;
+    display: flex;
 }

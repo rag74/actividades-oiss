@@ -61,7 +61,7 @@ function ActividadContainer({user,userNIVEL}) {
               :
                 autorizado ? 
                 <div className="contenedor">
-                  <Actividad nivelUsuarioS = {nivelUsuarioS} user = {user} REG = {REG} recupero = {recupero} loading ={loading}/>
+                  <Actividad ID = {ID} nivelUsuarioS = {nivelUsuarioS} user = {user} REG = {REG} recupero = {recupero} loading ={loading}/>
                 </div>
                 :
                 <div className="contenedor noAutorizado">

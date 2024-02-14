@@ -94,12 +94,13 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    max-height: 220px;
+    max-height: 195px;
     justify-content: flex-start;
 }
 
 .subPublico {
-display: flex;
+    display: flex;
+    align-items: center;
     }
     
 .subPublico label {

@@ -1,8 +1,9 @@
-export function prellenar(recupero, setearTipo) {
+export function prellenar(recupero, setearTipo, setOrga) {
     //
     
     console.log(recupero)
     setearTipo(recupero.tipo)
+    setOrga(recupero.organizador)
     //let elem = document.getElementById("SUBtipo")
     //elem.classList.remove("none")
     
@@ -48,8 +49,6 @@ export function prellenar(recupero, setearTipo) {
 
     document.getElementById("organizador").value = recupero.organizador
 
-    document.getElementById("organizadorDetalle").value = recupero.organizadorDetalle
-
     document.getElementById("cofinanciadora").value = recupero.cofinanciadora
     
     document.getElementById("enlaceActividad").value = recupero.enlaceActividad 
@@ -67,6 +66,19 @@ export function prellenar(recupero, setearTipo) {
     document.getElementById("ponentesHombres").value = recupero.ponentes[1]
     document.getElementById("ponentesOtros").value = recupero.ponentes[2]
     document.getElementById("poneTotal").value = recupero.ponentes[3]
+
+
+    setTimeout(() => { organizadoresSet(); }, 10);
+
+    const organizadoresSet = ()=>{
+      document.getElementById("organizadorDetalle").value = recupero.organizadorDetalle
+
+      if (recupero.organizadorApoya) {
+       document.getElementById("organizadorApoya").value = recupero.organizadorApoya
+      }
+
+      }
+
 
     
     const checkCheckboxes = (ids)=>{

@@ -1,14 +1,15 @@
 import React, { useState , useEffect } from "react";
-import './ListadoActividadContainer.css';
+import './CuadroContainer.css'
 import {useUserAuth} from '../../context/UserAuthContext';
 import { collection, query, getDoc, getDocs, where, doc } from "firebase/firestore";
 import { useParams , useNavigate} from "react-router-dom";
 import db from '../../firebase';
-import ListadoActividades from "../ListadoActividades/ListadoActividades";
+import Cuadro from '../Cuadro/Cuadro'
 import SkeletonFicha from "../SkeletonFicha/SkeletonFicha";
 
 
-function ListadoActividadContainer({user,userNIVEL}) {
+
+function CuadroContainer ({user,userNIVEL}) {
   console.log("userNIVEL")
   console.log(userNIVEL)
 
@@ -21,7 +22,6 @@ function ListadoActividadContainer({user,userNIVEL}) {
   console.log(nivelUsuarioS)
   const [autorizado, setAutorizado] = useState(false)
 
-  const setReload1 = ""
 
   console.log(reload)
   console.log(codigosPlan)
@@ -31,8 +31,8 @@ function ListadoActividadContainer({user,userNIVEL}) {
             
         let arr = []
       
-        /*, where("delegación", "==", CENTRO)*/
-              const q = query(collection(db, "repositorioFichas"),where("tipoFicha", "==", "publicada"), where("delegación", "==", REG))
+      
+              const q = query(collection(db, "repositorioFichas"), where("tipoFicha", "==", "publicada"), where("delegación", "==", REG))
               let querySnapshot = await getDocs(q);
               
               querySnapshot.forEach(item => {
@@ -70,8 +70,8 @@ function ListadoActividadContainer({user,userNIVEL}) {
     {loading ? <SkeletonFicha/> 
               :
                 autorizado ? 
-                <div className="contenedor listadoActividad">
-                  <ListadoActividades nivelUsuarioS = {nivelUsuarioS} user = {user} REG = {REG} fichas = {fichas} loading = {loading} codigosPlan = {codigosPlan} />
+                <div className="contenedorCuadro">
+                  <Cuadro nivelUsuarioS = {nivelUsuarioS} user = {user} REG = {REG} fichas = {fichas} loading = {loading} codigosPlan = {codigosPlan} />
                 </div>
                 :
                 <div className="contenedor noAutorizado">
@@ -83,9 +83,4 @@ function ListadoActividadContainer({user,userNIVEL}) {
   )
 }
 
-export default ListadoActividadContainer
-
-//Filtrado de fichas a bajas
-/*, where("editor", "==", (localuser.uid))*/
-
-/*where("fichaTipo", "===", "publicada")*/
+export default CuadroContainer

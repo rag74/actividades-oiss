@@ -8,7 +8,7 @@ function Entrada() {
 
   return (
     <div className='fondoingreso'>
-        <h2>Registro de actvidades OISS - version 0.1</h2>
+        <h2>Registro de actvidades OISS - version 0.3</h2>
         <div className='navbutton' /*onClick={handleEntrar}*/><Link to="/panel">Ingresar</Link></div>
     </div>
   )

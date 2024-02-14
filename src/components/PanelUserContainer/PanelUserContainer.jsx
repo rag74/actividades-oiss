@@ -68,12 +68,3 @@ function PanelUserContainer ({user,userNIVEL}) {
 
   export default PanelUserContainer;
 
-
-  /*
-            { userLevels.todo ?
-              <PanelAdmin userLevels={userLevels} user={user}/>  
-              :
-              <PanelUser userLevels={userLevels} user={user}/>
-          }
-
-  */

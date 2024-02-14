@@ -1,43 +1,55 @@
 import { useEffect, useState } from "react"
 import './Actividad.css'
 import { useUserAuth } from "../../context/UserAuthContext"
-import { useParams , useNavigate} from "react-router-dom";
+import { Link, useParams , useNavigate , useLocation } from "react-router-dom";
+import Updating from "../Updating/Updating";
+import ModalStandard from "../ModalStandard/ModalStandard";
 
-function Actividad({nivelUsuarioS, user, REG, recupero,loading}) {
+function Actividad({nivelUsuarioS,ID, user, REG, recupero,loading}) {
    
-  
 
-  const {destinatarios,iberoamerica,codigosPlan,OISSCentro, verify, generarFicha, guardarFicha, prellenar} = useUserAuth()
+  const {destinatarios,iberoamerica,codigosPlan,OISSCentro, OISSViñetas, verify, generarFicha, guardarFicha, prellenar} = useUserAuth()
+  
+  const [update, setUpdate] = useState(false)
+  const [vermodal, setVermodal] = useState(false)
+  const [modaltipo, setModaltipo] = useState()
+  const [tipoerror, setTipoerror] = useState()
+
+  useEffect(() => {
+    if (recupero!=null){
+        prellenar(recupero,setearTipo,setOrga)
+        contarPartPone("part", "partTotal")
+        contarPartPone("pone", "poneTotal")
+    }
+    else {
+        setPonentes([0,0,0,0])
+        setParticipantes([0,0,0,0])
+    }
+  }, [recupero])
+  
   console.log("IMPORTACIONES ACTIVIDAD")
 
   const navigate = useNavigate()
+  const currentRoute = useLocation().pathname;
 
   const [tipo, setearTipo] = useState("") 
   const [organizador, setearOrganizador] = useState("")
   const [ponentes, setPonentes] = useState()
   const [participantes, setParticipantes] = useState()
 
-  const [textareaheight, setTextareaheight] = useState(10); 
+  const [textareaheight, setTextareaheight] = useState(10);
+  const [orga, setOrga] =  useState();
   var arr = []
   
 
-
-
-  useEffect(() => {
-    if (recupero!=null){
-        prellenar(recupero,setearTipo)
-        contarPartPone("part", "partTotal")
-        contarPartPone("pone", "poneTotal")
-    }
-  }, [recupero])
-  
-  
   useEffect(() => {
     var elem = document.getElementById("SUBtipo");
     if (tipo !== ""){
         elem.classList.remove("none")
     } else {elem.classList.add("none")}
   }, [tipo])
+
+
 
   const goBack = () => {
     navigate(-1);}
@@ -51,13 +63,16 @@ function Actividad({nivelUsuarioS, user, REG, recupero,loading}) {
                 ))
 
    const paisesIberoamericanos = iberoamerica.map(item=>(
-        <option value={item}>{item}</option>
+        <option key={item} value={item}>{item}</option>
    ))
 
    const contribuciones = codigosPlan.map(item=>(
         <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
    ))
 
+   const centroOrganizador = OISSViñetas.map(item=>(
+    <option key={item.sigla} value={[item.centro]}>{item.centro}</option>
+    ))
 
 //*//// LIMITAR FECHA FINAL
 const handleFinalDate = (e)=> {
@@ -65,20 +80,6 @@ const handleFinalDate = (e)=> {
     document.getElementById('fechafinal').setAttribute("min", e);
 }
 //*////////////////
-
-//**/// ORGANIZADOR - SETEAR CENTRO 
-const handleCentro = (e)=> {
-    if (e == "OISS" ) {
-       console.log(OISSCentro[REG]) 
-       document.getElementById("organizadorDetalle").value = OISSCentro[REG]
-       document.getElementById("organizadorDetalle").readOnly = true
-    } else {
-        document.getElementById("organizadorDetalle").readOnly = false
-        document.getElementById("organizadorDetalle").value = ""
-    }
-}
-
-//*/////////////
 
 
 //*//////HANDLE TRANSVERSALES
@@ -138,17 +139,37 @@ const contarPartPone = (clase, final)=> {
 const handleCont = (ev)=> {console.log(ev)}
 
 
-const handleSubir = async (ponentes, participantes, tiposubida)=> {
+const handleSubir = async (ponentes, participantes, tiposubida,llave)=> {
+
+    console.log(llave)
+    if (llave) {
+        recupero = null
+        console.log("recupero:")
+        console.log(recupero)
+    }
     
     var ficha = generarFicha(ponentes, participantes, tiposubida, user, REG, recupero)
+    
     var verificar = verify(ficha)
-    if (verificar != "OK") {alert(verificar)}
 
     if (verificar === "OK") {
+        setUpdate(true)
+        setModaltipo("fichaGuardada")
         await guardarFicha(ficha)
-        alert("el borrador ha sido guardado correctamente")
+        setUpdate(false)
         console.log(ficha)
-    }
+        setVermodal(true)
+        } else {
+            setModaltipo("errorSubida")
+            setUpdate(false)
+            setTipoerror(verificar)
+            setVermodal(true)
+        }
+}
+
+const handleElim = ()=> {
+    setModaltipo("eliminar")
+    setVermodal(true)
 }
 
 const removeError = e => {
@@ -168,6 +189,16 @@ const removeError = e => {
     <div className="contenedor actividad">
         {loading ? <h1>Cargando...</h1> : 
         <>
+
+            <div>
+                {currentRoute.includes("control") ? <h2>Edición de ficha</h2> : <h2>Nueva ficha</h2>}
+            </div>
+
+        <div className="panel-header">
+            <Link onClick={() => navigate(-1)} to="/"><div class="buttonNew ml-0"><i class="fa-solid fa-arrow-left"></i></div></Link>
+        </div>
+
+
         <h3>Información general</h3> 
 
         <label for="titulo">Título de la actividad</label>
@@ -180,39 +211,40 @@ const removeError = e => {
                 <label htmlFor="tipo" className="">Tipo</label>
                 <select name="tipo" id="tipo" className="tipoOne" onChange={(e)=> {setearTipo(e.target.value)}} onBlur={removeError} >
                     <option value="">Elija un tipo de actividad</option>
-                    <option value="A">Asesoramiento</option>
-                    <option value="C">Comunicación</option>
-                    <option value="E">Evento</option>
-                    <option value="F">Formación</option>
-                    <option value="P">Producto</option>
+                    <option value="Asesoramiento">Asesoramiento</option>
+                    <option value="Comunicación">Comunicación</option>
+                    <option value="Evento">Evento</option>
+                    <option value="Formación">Formación</option>
+                    <option value="Producto">Producto</option>
                 </select>
             </div>
             <div className="subTipologia none" id="SUBtipo">
                 <label htmlFor="subtipo" className="">Subtipo</label>
                 <select name="subtipo" id="subtipo" className="" onChange={(e)=> {}} onBlur={removeError} >
                     
-                    {tipo == "A" && 
+                    {tipo == "Asesoramiento" && 
                         <> 
                         <option value="">Elija un subtipo</option>
                         <option value="Asistencia técnica">Asistencia técnica</option>
+                        <option value="Reunión">Reunión</option>
                         <option value="Otros">Otros</option>
                         </>
                     }
 
-                    { tipo == "C" && 
+                    { tipo == "Comunicación" && 
                         <>
                         <option value="">Elija un subtipo</option>
+                        <option value="Campañas">Campañas</option>
                         <option value="Newsletter">Newsletter</option>
                         <option value="Portal">Portal</option>
                         <option value="Redes Sociales">Redes Sociales</option>
-                        <option value="Formación">Formación</option>
                         <option value="Rueda de prensa">Rueda de prensa</option>
                         <option value="Web OISS">Web OISS</option>
                         <option value="Otros">Otros</option>
                         </>
                     }
 
-                    { tipo == "E" && 
+                    { tipo == "Evento" && 
                         <>
                         <option value="">Elija un subtipo</option>
                         <option value="Asamblea">Asamblea</option>
@@ -226,11 +258,12 @@ const removeError = e => {
                         <option value="Grupo de Trabajo">Grupo de Trabajo</option>
                         <option value="Ponencia">Ponencia</option>
                         <option value="Reunión">Reunión</option>
+                        <option value="Simposio">Simposio</option>
                         <option value="Otros">Otros</option>
                         </>
                     }
 
-                    { tipo == "F" && 
+                    { tipo == "Formación" && 
                         <>        
                         <option value="">Elija un subtipo</option>
                         <option value="Curso">Curso</option>
@@ -244,7 +277,7 @@ const removeError = e => {
                         </>
                     }
 
-                    { tipo == "P" && 
+                    { tipo == "Producto" && 
                         <>  
                         <option value="">Elija un subtipo</option>
                         <option value="Acta">Acta</option>
@@ -274,6 +307,7 @@ const removeError = e => {
                         <option value="Virtual sincrónica">Virtual sincrónica</option>
                         <option value="Virtual asincrónica">Virtual asincrónica</option>
                         <option value="Híbrida (retransmisión en directo)">Híbrida (retransmisión en directo)</option>
+                        <option value="Mixto (presencial + virtual)">Mixto (presencial + virtual)</option>
                 </select>
             </div>
             <div className="subFormato small">
@@ -302,20 +336,40 @@ const removeError = e => {
         <div className="separador"/>
 
         <div className="organiza">
-            <div className="subOrganiza w40">
+            <div className="subOrganiza w20">
                 <label htmlFor="organizador" className="">Organiza</label>
-                <select name="organizador" id="organizador" className="" onChange={(e)=>{handleCentro(e.target.value)}} onBlur={removeError} >
+                <select name="organizador" id="organizador" className="" onChange={(e)=>{setOrga(e.target.value)}} onBlur={removeError} >
                         <option value="">Elija un elemento</option>
                         <option value="OISS">OISS</option>
-                        <option value="Otra entidad (especifique) ">Otra entidad (especifique) </option>
+                        <option value="Otra entidad (especifique)">Otra entidad (especifique)</option>
                 </select>
             </div>
 
-            <div className="subOrganiza fill">
-                <label htmlFor="masDetalle" className="">Más detalles</label>
-                <input type="text" name="masDetalle" id="organizadorDetalle" onBlur={removeError} />
-            </div>
+                { orga == "OISS" ? 
+                 <> 
+                    <div className="subOrganiza w40">
+                        <label htmlFor="masDetalle" className="">Lidera</label>
+                        <select type="text" name="masDetalle" id="organizadorDetalle" onBlur={removeError}>
+                            <option value="">Elija un elemento</option>
+                            {centroOrganizador}
+                        </select>
+                    </div>
+                    <div className="subOrganiza fill">
+                        <label htmlFor="masDetalle" className="">Apoya</label>
+                        <select type="text" name="apoya" id="organizadorApoya" onBlur={removeError} >
+                            <option value="">Elija un elemento</option>
+                            {centroOrganizador}
+                        </select>
+                    </div>
+                 </>  
+                        :
 
+                    <div className="subOrganiza w60 fill">
+                        <label htmlFor="masDetalle" className="">Más detalles</label>
+                        <input type="text" name="masDetalle" id="organizadorDetalle" onBlur={removeError} />
+                    </div>
+                 }
+                
             <div className="subOrganiza w50">
                 <label htmlFor="cofinanciadora" className="">Entidad co-financiadora</label>
                 <input type="text" name="cofinanciadora" id="cofinanciadora" onBlur={removeError} />
@@ -355,7 +409,7 @@ const removeError = e => {
                     <input type="number" name="part" id="partOtros" min="0" defaultValue="0" className="nroPart w20" onChange={(e)=> {contarPartPone("part", "partTotal")}}/> Nro. de otros
                 </label>
                 <label for="partTotal">
-                    <input type="number" name="partTotal" id="partTotal" className="w20" disabled onChange={removeError}/> Total
+                    <input type="number" name="partTotal" id="partTotal" className="w20" defaultValue="0" disabled onChange={removeError}/> Total
                 </label>
              </div>
             </div>
@@ -372,7 +426,7 @@ const removeError = e => {
                     <input type="number" name="pone" id="ponentesOtros" min="0" defaultValue="0" className="nroPone w20" onChange={(e)=> {contarPartPone("pone", "poneTotal")}}/> Nro. de otros
                 </label>
                 <label for="ponentesTotal">
-                    <input type="number" name="poneTotal" id="poneTotal" className="w20" disabled onChange={removeError}/> Total
+                    <input type="number" name="poneTotal" id="poneTotal" className="w20" defaultValue="0" disabled onChange={removeError}/> Total
                 </label>
                 </div>
             </div>
@@ -466,12 +520,19 @@ const removeError = e => {
             { recupero && 
             <>
             <button className="mr-5" onClick={()=>handleSubir(ponentes, participantes, "publicada")}>Guardar cambios</button>
-            <button className="mr-5 pink" onClick={()=>{}}>Eliminar</button>
+            <button className="mr-5 pink" onClick={()=>{handleElim()}}>Eliminar</button>
             </>
             }
             <button className="mr-5"onClick={goBack}>Salir sin guardar</button>
+            <button className="mr-5" onClick={()=>handleSubir(ponentes, participantes, "publicada",1)}>Guardar LLAVE MAESTRA</button>
+
             
         </div>
+
+
+        {vermodal && <ModalStandard ID = {ID} modaltipo = {modaltipo} tipoerror = {tipoerror} setVermodal = {setVermodal} REG = {REG} user = {user} recupero = {recupero}/>}
+        {update && <Updating/>}
+
         </>}
     </div>            
   )

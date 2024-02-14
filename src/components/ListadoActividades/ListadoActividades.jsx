@@ -4,6 +4,7 @@ import {useUserAuth} from '../../context/UserAuthContext';
 import { collection, query, getDoc, getDocs, where, doc } from "firebase/firestore";
 import { Link, useParams , useNavigate} from "react-router-dom";
 import db from '../../firebase';
+import ModalCodigo from "../ModalCodigo/ModalCodigo";
 
 
 function ListadoActividades({nivelUsuarioS,user,REG,fichas,loading,codigosPlan}) {
@@ -18,48 +19,83 @@ function ListadoActividades({nivelUsuarioS,user,REG,fichas,loading,codigosPlan})
     console.log(user.uid)
     const {OISSCentro, arrayToCsv, download} = useUserAuth()
     
-    const fichasFinales = codigosPlan.map((cod) => {
-    const fichasElegidas = fichas.filter((ficha) => ficha.CodPlanEstratégico === cod.cod);
+    //////MODAL/////
+    const [verModal, setVermodal] = useState(false)
+    const [modaltipo, setModaltipo] = useState()
+    const [fichaModal, setfichaModal] = useState()
 
-    if (fichasElegidas.length > 0) {
-    return (
-    <div className="listado">
-        <h4 className=" mt-10 mb-5">{cod.desc} ({cod.cod})</h4>
-            <div className="headRow">
-                      <span className='titulo'>Título de la actividad</span>
-                      <span className='auto'>Autor</span>
-                      <span className='editor1'>Editor</span>
-                      <span className='fecha'>Fecha</span>
-                      <span className='estado'>Estado</span>
-                      <span className='accion'></span>
-            </div>
-            
-                {fichasElegidas?.map((ficha) => (
-                    <div key={ficha.creado} className={`fileRow ${ficha.creador[1] == nivelUsuarioS.userUID && "aliceBlue"}`} >
-                        <span className='titulo'>{ficha.titulo}</span>
-                        <span className='auto'>{ficha.creador[0]}</span>
-                        <span className='editor1'>{ficha.editor[0]}</span>
-                        <span className='fecha'>{ficha.modificación ? timestampToDate(ficha.modificación) : timestampToDate(ficha.creado)}</span>
-                        <span className="estado" draggable>{ficha.codContable ? <div className="badjeRow green">asignada</div> : <div className="badjeRow black">sin asignar</div>}</span>
-                        <span className='revisar'>
-                            <Link to={`/ficha/${REG}/${ficha.id}-${ficha.creado}`}><button className='buttonRow mr-5'>ver</button></Link>
-                            
-                            { (nivelUsuarioS.nivel ==1 || nivelUsuarioS.administrador || ficha.creador[1] == nivelUsuarioS.userUID /*user.uid*/) &&
-                            <Link to={`/control/${REG}/${ficha.id}-${ficha.creado}`}><button className='buttonRow mr-5'>editar</button></Link>
-                                }
-                                
-                            { (nivelUsuarioS.nivel == 1 || nivelUsuarioS.administrador) &&
-                            <button className='buttonRow pink' onClick={()=>{}/*handleEliminar(item.articleID)*/} >eliminar</button>
-                                }
-                        </span>
-                    </div>
-                ))}
-           <div className="mb-10"/>
-            
-    </div>
-    );} 
+    const handleAsignar = (ficha,tipo)=> {
+        //alert("asignar "+id+"-"+creado+" - "+string+" - "+tipo)
+        setModaltipo(tipo)
+        setfichaModal(ficha)
+        setVermodal(true)
+    }
+
     
-});
+    const fichasFinales = codigosPlan.map((cod) => {
+        const fichasElegidas = fichas.filter((ficha) => ficha.CodPlanEstratégico === cod.cod);
+
+        if (fichasElegidas.length > 0) {
+
+                const handDuplicate = (valor)=>{
+                    let veces = 0;
+                    for (const objeto of fichasElegidas) {
+                        if (objeto.CodContable === valor) {
+                        veces++;
+                        }
+                        }
+
+                    console.log(fichasElegidas)
+                    console.log(valor)
+                    console.log(veces)  
+                    return veces                 
+                }
+
+
+        return (
+        <div className="listado">
+            <h4 className=" mt-10 mb-5">{cod.desc} ({cod.cod})</h4>
+                <div className="headRow">
+                        <span className='estado'>Código</span>
+                        <span className='titulo'>Título de la actividad</span>
+                        <span className='auto'>Autor</span>
+                        <span className='editor1'>Editor</span>
+                        <span className='fecha'>Fecha</span>
+                        <span className='accion'></span>
+                </div>
+                
+                    {fichasElegidas?.map((ficha) => (
+                        <>
+                        <div key={ficha.creado} className={`fileRow ${ficha.creador[1] == nivelUsuarioS.userUID && "aliceBlue"}`} >
+                            <span className="estado hov" draggable>{ficha.CodContable != "S/C" ? <div onClick={nivelUsuarioS.nivel==1 ? ()=>handleAsignar(ficha,"cambiarcodigo"): ()=>{}}><p className={`${handDuplicate(ficha.CodContable) > 1 && "pink fl"}`}>{ficha.CodContable}</p></div> : <div className={`badjeRow black ${nivelUsuarioS.nivel==1 && "hov"}`} onClick={nivelUsuarioS.nivel==1 ? ()=>handleAsignar(ficha,"codigocontable"): ()=>{}}>sin asignar</div>}</span>
+
+                            <span className='titulo'>{ficha.titulo} { (nivelUsuarioS.nivel ==1) && <span className="badjeRow green hov">NC</span>}</span>
+
+                            <span className='auto'>{ficha.creador[0]}</span>
+                            <span className='editor1'>{ficha.editor[0]}</span>
+                            <span className='fecha'>{ficha.modificación ? timestampToDate(ficha.modificación) : timestampToDate(ficha.creado)}</span>
+                            <span className='revisar'>
+                                <Link to={`/ficha/${REG}/${ficha.id}-${ficha.creado}`}><button className='buttonRow mr-5'>ver</button></Link>
+                                
+                                { (nivelUsuarioS.nivel ==1 || nivelUsuarioS.administrador || ficha.creador[1] == nivelUsuarioS.userUID /*user.uid*/) &&
+                                <Link to={`/control/${REG}/${ficha.id}-${ficha.creado}`}><button className='buttonRow mr-5'>editar</button></Link>
+                                    }
+                                    
+                                { (nivelUsuarioS.nivel == 1 || nivelUsuarioS.administrador) &&
+                                <button className='buttonRow pink' onClick={()=>{handleAsignar(ficha,"eliminar")}} >eliminar</button>
+                                    }
+                                {/*<button className='buttonRow' onClick={()=>{}} >{ficha.delegación}</button>*/}
+
+                                
+                            </span>
+                        </div>
+                        </>
+                    ))}
+            <div className="mb-10"/>
+                
+        </div>
+        );}   
+    });
 
 function timestampToDate(timestamp) {
         const date = new Date(timestamp) 
@@ -123,13 +159,22 @@ const arrHeader = [
 
   return (
     <>
+    {verModal && <ModalCodigo modaltipo = {modaltipo} setVermodal = {setVermodal} fichaModal = {fichaModal} fichas = {fichas} REG ={REG} user={user} setModaltipo={setModaltipo} />}
+
     <h2 className="mb-10">Listado de Actividades {OISSCentro[REG]}</h2>
-    <div className="panel-header">
-        <Link to={`/nuevaficha/${REG}`}><div class="buttonNew ml-0">Nueva ficha</div></Link>
+    <div className="panel-header fijo-menu mt-5">
+            <Link to={`/panel`}><div class="buttonNew ml-0"><i class="fa-solid fa-arrow-left"></i></div></Link>
+            <Link to={`/nuevaficha/${REG}`}><div class="buttonNew ml-0">Nueva ficha</div></Link>
+        {fichas.length > 0 &&
+            <>
+            <Link to={`/cuadro/${REG}`}><div class="buttonNew ml-0">Cuadro</div></Link>
+            <Link to={`/stats/${REG}`}><div class="buttonNew ml-0">Estadísticas</div></Link>
+            </>
+        }
     </div>
     {fichasFinales}
     <div>
-        { nivelUsuarioS.administrador &&
+        { (nivelUsuarioS.administrador || nivelUsuarioS.nivel == 1)  && fichas.length > 0 &&
         <button onClick={()=>generateCSV(arrHeader, fichas, "fichasCSV")}>Bajar CSV</button>
             }
     </div>
@@ -138,3 +183,17 @@ const arrHeader = [
 }
 
 export default ListadoActividades
+
+
+/*
+
+
+
+
+    const handDup = (valor)=>{
+        var index = fichasElegidas.indexOf(valor)
+        console.log(fichasElegidas)
+        console.log(valor)
+        console.log(index)                    
+    }
+*/

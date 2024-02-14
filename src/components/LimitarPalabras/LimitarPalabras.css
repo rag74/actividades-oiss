@@ -1,0 +1,17 @@
+.c-descripcion > button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
+
+button i {
+ color: #b9b9b9;
+ opacity: 0.7;
+ 
+}
+
+button i:hover {
+    cursor: pointer;
+    opacity: 1;
+}

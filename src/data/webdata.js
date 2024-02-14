@@ -1,7 +1,6 @@
-export const destinatarios = ['Asesores/as','Docentes academia,Estudiantes','Personal instituciones públicas','Personal entidades sin ánimo de lucro','Personal experto','Personal OISS','Personal organismos internacionales','Personal sector privado','Público en general',
-'Representantes gubernamentales','Representantes instituciones miembros de la OISS','Representantes instituciones públicas','Representantes organismos internacionales','Representantes sector privado']
+export const destinatarios = ['Asesores/as','Docentes academia','Estudiantes','Personal instituciones públicas','Personal entidades sin ánimo de lucro','Personal experto','Personal OISS','Personal organismos internacionales','Personal sector privado','Público en general','Representantes gubernamentales','Representantes instituciones miembros de la OISS','Representantes instituciones públicas','Representantes organismos internacionales','Representantes sector privado']
  
-export const iberoamerica =['Argentina','Bolivia','Brasil','Chile','Colombia','Costa Rica','Cuba','Ecuador','El Salvador','España','Guatemala','Honduras','México','Nicaragua','Panamá','Paraguay','Perú','Portugal','Puerto Rico','República Dominicana','Uruguay','Venezuela']
+export const iberoamerica =['Andorra','Argentina','Bolivia','Brasil','Chile','Colombia','Costa Rica','Cuba','Ecuador','El Salvador','España','Guatemala','Guinea Ecuatorial','Honduras','México','Nicaragua','Panamá','Paraguay','Perú','Portugal','Puerto Rico','República Dominicana','Uruguay','Venezuela','Otros']
 
 export const OISSCentro = { "SG":"SG Secretaría General",
                             "CRCAC":"CR Centro América y Caribe",
@@ -12,7 +11,8 @@ export const OISSCentro = { "SG":"SG Secretaría General",
                             "DBRA":"DL Brasil",
                             "DPAR":"DL Paraguay",
                             "DDOM":"DL República Dominicana",
-                            "CIEF":"CIEF"
+                            "CIEF":"CIEF",
+                            "CPTAR":"CIAPAT-AR"
                             }
                             
 export const OISSViñetas = [{"sigla":"SG","centro":"SG Secretaría General"},
@@ -24,12 +24,13 @@ export const OISSViñetas = [{"sigla":"SG","centro":"SG Secretaría General"},
                             {"sigla":"DBRA","centro":"DL Brasil"},
                             {"sigla":"DPAR","centro":"DL Paraguay"},
                             {"sigla":"DDOM","centro":"DL República Dominicana"},
-                            {"sigla":"CIEF","centro":"CIEF"}
+                            {"sigla":"CIEF","centro":"CIEF"},
+                            {"sigla":"CPTAR","centro":"CIAPAT-AR"}
                              ]
 
 export const codigosPlan = [{"cod": "1.1.1.1.","desc": "Personas adultas mayores"},
                             {"cod": "1.1.1.2.","desc": "Discapacidad"},
-                            {"cod": "1.1.1.3.","desc": "CIAPAT"},
+                            {"cod": "1.1.1.3.","desc": "T.Apoyo"},
                             {"cod": "1.1.1.4.","desc": "Educación SS"},
                             {"cod": "1.1.1.5.","desc": "Juventud"},
                             {"cod": "1.1.1.6.","desc": "Sensibilización/Capacitación RE1.1"},
@@ -64,6 +65,82 @@ export const codigosPlan = [{"cod": "1.1.1.1.","desc": "Personas adultas mayores
                             {"cod": "4.4.3.3.","desc": "Calidad y Humanización Salud"},
                             {"cod": "4.4.3.4.","desc": "Economía Salud"}
                             ]
+
+
+
+export const codigosPresupuesto = [
+                            {"cod": "1.1.","desc": "Mayores, Discapacidad, Juventud, Educación"},
+                            {"cod": "1.1.1.","desc": "Mayores"},
+                            {"cod": "1.1.1.1.","desc": "Mayores. Actividades con impacto externo"},
+                            {"cod": "1.1.1.2.","desc": "Mayores. Actividades sin impacto externo"},
+                            {"cod": "1.1.2.","desc": "Discapacidad"},
+                            {"cod": "1.1.2.1.","desc": "Discapacidad. Actividades con impacto externo"},
+                            {"cod": "1.1.2.2.","desc": "Discapacidad. Actividades sin impacto externo"},
+
+                            {"cod": "1.1.3.","desc": "Juventud"},
+                            {"cod": "1.1.3.1.","desc": "Juventud. Actividades con impacto externo"},
+                            {"cod": "1.1.3.2.","desc": "Juventud. Actividades sin impacto externo"},
+                            {"cod": "1.2.","desc": "Seguridad y Salud Laboral"},
+                            {"cod": "1.2.1.","desc": "Seguridad y Salud Laboral"},
+                            {"cod": "1.2.1.1.","desc": "Seguridad y Salud Laboral. Actividades con impacto externo"},
+                            {"cod": "1.2.1.2.","desc": "Seguridad y Salud Laboral. Actividades sin  impacto externo"},
+
+                            {"cod": "1.3.","desc": "Género"},
+                            {"cod": "1.3.1.","desc": "Género"},
+                            {"cod": "1.3.1.1.","desc": "Género. Actividades con impacto externo"},
+                            {"cod": "1.3.1.2.","desc": "Género. Actividades sin impacto externo"},
+
+
+                            {"cod": "2.1.","desc": "Convenio Multilateral Iberoamericano de Seguridad Social"},
+                            {"cod": "2.1.1.","desc": "Convenio Multilateral Iberoamericano de Seguridad Social"},
+                            {"cod": "2.1.1.1.","desc": "Convenio Multilateral Iberoamericano de Seguridad Social. Actividades con impacto externo"},
+                            {"cod": "2.1.1.2.","desc": "Convenio Multilateral Iberoamericano de Seguridad Social. Actividades sin impacto externo"},
+
+                            {"cod": "2.2.","desc": "Integración Regional"},
+                            {"cod": "2.2.1.","desc": "Integración Regional MERCOSUR"},                     
+                            {"cod": "2.2.1.1.","desc": "Integración Regional. MERCOSUR. Actividades con impacto externo"},
+                            {"cod": "2.2.1.2.","desc": "Integración Regional. MERCOSUR. Actividades sin impacto externo"},
+
+                            {"cod": "3.1.","desc": "Fortalecimiento de los Sistemas de Seguridad Social"},
+                            {"cod": "3.1.1.","desc": "Mejora de la Gobernanza y Gestión de los Sistemas de Seguridad Social"},
+                            {"cod": "3.1.1.1.","desc": "Mejora de la Gobernanza y Gestión de los Sistemas de Seguridad Social. Actividades con impacto externo"},
+                            {"cod": "3.1.1.2.","desc": "Mejora de la Gobernanza y Gestión de los Sistemas de Seguridad Social. Actividades sin impacto externo"},
+                            
+                            {"cod": "3.2.","desc": "Formación en Género y Protocolo de Acoso"},
+                            {"cod": "3.2.1.","desc": "Formación en Género"},
+                            {"cod": "3.2.1.1.","desc": "Formación en Género. Actividades con impacto externo"},
+                            {"cod": "3.2.1.2.","desc": "Formación en Género. Actividades sin impacto externo"},
+
+                            {"cod": "3.3.","desc": "Digitalización y Nuevas Tecnologías"},
+                            {"cod": "3.3.1.","desc": "Digitalización y Nuevas Tecnologías"},
+                            {"cod": "3.3.1.1.","desc": "Digitalización y Nuevas Tecnologías. Actividades con impacto externo "},
+                            {"cod": "3.3.1.2.","desc": "Digitalización y Nuevas Tecnologías. Actividades sin impacto externo "},
+
+                            {"cod": "4.1.","desc": "Protección Social"},
+                            {"cod": "4.1.1.","desc": "Protección Social"},
+                            {"cod": "4.1.1.1.","desc": "Protección Social. Actividades con impacto externo"},
+                            {"cod": "4.1.1.2.","desc": "Protección Social. Actividades sin impacto externo"},
+
+
+                            {"cod": "4.2.","desc": "Servicios Sociales"},
+                            {"cod": "4.2.1.","desc": "Servicios Sociales"},
+                            {"cod": "4.2.1.1.","desc": "Servicios Sociales. Actividades con impacto externo"},
+                            {"cod": "4.2.1.2.","desc": "Servicios Sociales. Actividades sin impacto externo"},
+
+                            {"cod": "4.3.","desc": "Salud"},
+                            {"cod": "4.3.1.","desc": "Salud"},
+                            {"cod": "4.3.1.1.","desc": "Salud. Actividades con impacto externo"},
+                            {"cod": "4.3.1.2.","desc": "Salud. Actividades sin impacto externo"},
+
+                            {"cod": "9.1.","desc": "Órganos Estatutarios"},
+                            {"cod": "9.1.1.","desc": "Órganos Estatutarios"},
+                            {"cod": "9.1.1.1.","desc": "Órganos Estatutarios"},
+
+                            {"cod": "9.2.","desc": "Servicios Generales"},
+                            {"cod": "9.2.2.","desc": "Centros Regionales y Delegaciones Nacionales"},
+                            {"cod": "9.2.2.1.","desc": "Centros Regionales y Delegaciones Nacionales"},
+
+                             ]
 
 
 /*

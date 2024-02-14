@@ -1,23 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './FichaImpresión.css'
-import { useEffect } from 'react'
+import {useUserAuth} from '../../context/UserAuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
 function FichaImpresión({nivelUsuarioS,user,REG,recupero,loading}) {
 
    
+ const {timestampToDate} = useUserAuth()
  const [checkbox, setCheckbox] = useState(false)
- 
- setTimeout(() => { checkCheckboxes(recupero.tipo); }, 5);
- setTimeout(() => { checkCheckboxes(recupero.destinatarios); }, 5);
- setTimeout(() => { checkCheckboxes(recupero.enfoque); }, 5);
- setTimeout(() => { checkCheckboxes(recupero.fuentes); }, 5);
- setTimeout(() => { checkCheckboxes(recupero.organizador); }, 5);
+
+ const navigate = useNavigate()
+
+ const goBack = () => {
+   navigate(-1);}
+
+ const arrays = [recupero.tipo,recupero.destinatarios,recupero.enfoque,recupero.fuentes,recupero.organizador];
+
+ const uniqueArray = arrays.reduce((acc, element) => acc.concat(element), []);
+
+ console.log(uniqueArray)
+  
+ setTimeout(() => { checkCheckboxes(uniqueArray); }, 5);
 
 useEffect(() => {
-    setTimeout(() => { seeCheck(); }, 2);
-    
+    setTimeout(() => { seeCheck(); }, 2);  
 }, [])
 
 function seeCheck() {
@@ -30,28 +38,6 @@ function seeCheck() {
  console.log("FICHAIMPRESION")
  console.log(recupero)
 
- function timestampToDate(timestamp) {
-        const date = new Date(timestamp) 
-        // Format the date string in the desired format.
-        let day = date.getDate()
-        let month = date.getMonth();
-        month = (month + 1)
-        let year = date.getFullYear();
-
-        if (day < 10) {
-            day = '0' + day;
-        }
-        
-        if (month < 10) {
-            month = `0${month}`;
-        }
-        
-        let formattedDate = `${day}-${month}-${year}`;
-        console.log(formattedDate); // 23-07-2022
-
-        console.log(formattedDate)
-        return formattedDate
-}
 
 const checkCheckboxes = (ids)=>{
     // Get all the checkbox elements
@@ -71,9 +57,13 @@ const checkCheckboxes = (ids)=>{
 
 
 
-
   return (
+    <>
+
     <div className='ficha'>
+    <div className="panel-header">
+    <Link onClick={() => navigate(-1)} to="/"><div class="buttonNew ml-0"><i class="fa-solid fa-arrow-left"></i></div></Link>
+    </div>
         <h1>Ficha de Actividad</h1>
         <div className='ficha-info mt-10'>
             <p>Información General</p>
@@ -113,23 +103,23 @@ const checkCheckboxes = (ids)=>{
                         <p>Tipo</p> 
                     </div>  
                     <div className='bb c pc100' style={{"height" : "23.2px"}}>
-                        <input type="checkbox" name="" id="A" className='' />
-                        <p className='pl5'>Asesoría</p> 
+                        <input type="checkbox" name="" id="Asesoramiento" className='' />
+                        <p className='pl5'>Asesoramiento</p> 
                     </div>
                     <div className='bb c pc100' style={{"height" : "23.2px"}}>
-                        <input type="checkbox" name="" id="C" className='' />
+                        <input type="checkbox" name="" id="Comunicación" className='' />
                         <p className='pl5'>Comunicación</p>
                     </div>
                     <div className='bb c pc100' style={{"height" : "23.2px"}}>
-                        <input type="checkbox" name="" id="E" className='' />
+                        <input type="checkbox" name="" id="Evento" className='' />
                         <p className='pl5'>Evento</p>
                     </div>
                     <div className='bb c pc100' style={{"height" : "23.2px"}}>
-                        <input type="checkbox" name="" id="F" className='' />
+                        <input type="checkbox" name="" id="Formación" className='' />
                         <p className='pl5'>Formación</p>
                     </div>
                     <div className='c pc100' style={{"height" : "23.2px"}}>
-                        <input type="checkbox" name="" id="P" className='' />
+                        <input type="checkbox" name="" id="Producto" className='' />
                         <p className='pl5'>Producto</p>
                     </div>
                 </div> 
@@ -140,19 +130,19 @@ const checkCheckboxes = (ids)=>{
                         <p>Subtipo</p> 
                     </div>  
                     <div className='bb c pc100 ai' style={{"height" : "23.2px"}}>
-                        {recupero.tipo == "A" && recupero.subtipo}
+                        {recupero.tipo == "Asesoramiento" && recupero.subtipo}
                     </div>
                     <div className='bb c pc100 ai' style={{"height" : "23.2px"}}>
-                         {recupero.tipo == "C" && recupero.subtipo}
+                         {recupero.tipo == "Comunicación" && recupero.subtipo}
                     </div>
                     <div className='bb c pc100 ai' style={{"height" : "23.2px"}}>
-                        {recupero.tipo == "E" && recupero.subtipo}
+                        {recupero.tipo == "Evento" && recupero.subtipo}
                     </div>
                     <div className='bb c pc100 ai' style={{"height" : "23.2px"}}>
-                        {recupero.tipo == "F" && recupero.subtipo}
+                        {recupero.tipo == "Formación" && recupero.subtipo}
                     </div>
                     <div className='c pc100 ai' style={{"height" : "23.2px"}}>
-                        {recupero.tipo == "P" && recupero.subtipo}
+                        {recupero.tipo == "Producto" && recupero.subtipo}
                     </div>
                 </div> 
             </div>
@@ -210,8 +200,8 @@ const checkCheckboxes = (ids)=>{
             <div className='ficha-col br p0 pc30'>
                 <div>
                     <div className='light-blue bb' style={{"minHeight" : "15px", "minWidth" : "100%" }}></div>  
-                    <div className='bb pl5 c' style={{"minHeight" : "23.6px"}}>
-                        <input type="checkbox" name="" id="OISS" className='' />
+                    <div className='bb pl5 c alignT' style={{"minHeight" : "36px"}}>
+                        <input type="checkbox" name="" id="OISS" className='mt-3' />
                         <p className='pl5'>OISS</p> 
                     </div>
                     <div className='pl5 c' style={{"minHeight" : "23.6px"}}>
@@ -224,8 +214,9 @@ const checkCheckboxes = (ids)=>{
             <div className='ficha-col p0 remains'>
                 <div>
                     <div className='light-blue bb ' style={{"minHeight" : "15px"}}></div>  
-                    <div className='bb pl5 c' style={{"minHeight" : "23.6px"}}>
-                        <p className='pl5'>{checkbox && recupero.organizadorDetalle}</p> 
+                    <div className='bb pl5' style={{"minHeight" : "23.6px"}}>
+                        <p className='pl5'>Lidera: {checkbox && recupero.organizadorDetalle}</p> 
+                        <p className='pl5'>Apoya: {checkbox && recupero.organizadorApoya}</p>
                     </div>
                     <div className='pl5 c' style={{"minHeight" : "23.6px"}}>
                         <p className='pl5'>{!checkbox && recupero.organizadorDetalle}</p> 
@@ -259,10 +250,10 @@ const checkCheckboxes = (ids)=>{
         </div>
 
         <div className='ficha-fila-standard pc100'>
-            <div className='ficha-colPrincipal' style={{"minHeight" : "237.5px"}}>
+            <div className='ficha-colPrincipal' style={{"minHeight" : "200px"}}>
               <p>Público destinatario:</p>
             </div>
-            <div className='ficha-col pc40'>
+            <div className='ficha-col pc40 pr50'>
                 <div className='c pc100 p0'>
                     <div>
                         <input type="checkbox" name="" id="Asesores/as" className='mr-5 mt-3' />
@@ -310,7 +301,7 @@ const checkCheckboxes = (ids)=>{
 
                 <div className='c pc100 p0'>
                     <div>
-                        <input type="checkbox" name="" id="Personal experto<" className='mr-5 mt-3' />
+                        <input type="checkbox" name="" id="Personal experto" className='mr-5 mt-3' />
                      </div>
                      <div>
                         <span className=''>Personal experto</span>
@@ -335,16 +326,20 @@ const checkCheckboxes = (ids)=>{
                      </div>
                 </div>
 
-                <div className='c pc100 p0'>
+            </div>
+
+            <div className='ficha-col pc50 bl pr50'>
+            
+            <div className='c pc100 p0'>
                      <div>
-                        <input type="checkbox" name="" id="Personal sector privados" className='mr-5 mt-3' />
+                        <input type="checkbox" name="" id="Personal sector privado" className='mr-5 mt-3' />
                      </div>
                      <div>
-                        <span className=''>Personal sector privados</span>
+                        <span className=''>Personal sector privado</span>
                      </div>
                 </div>
 
-                <div className='pc100 c p0'>
+            <div className='pc100 c p0'>
                     <div>
                         <input type="checkbox" name="" id="Público en general" className='mr-5 mt-3' />
                      </div>
@@ -352,8 +347,7 @@ const checkCheckboxes = (ids)=>{
                         <span className=''>Público en general</span>
                      </div>
                 </div>
-            </div>
-            <div className='ficha-col pc60'>
+
             <div className='c pc100 p0'>
                     <div>
                         <input type="checkbox" name="" id="Representantes gubernamentales" className='mr-5 mt-3' />
@@ -392,10 +386,10 @@ const checkCheckboxes = (ids)=>{
 
                 <div className='c pc100 p0'>
                     <div>
-                        <input type="checkbox" name="" id="Personal entidades sin ánimo de lucro" className='mr-5 mt-3' />
+                        <input type="checkbox" name="" id="Representantes sector privado" className='mr-5 mt-3' />
                      </div>
                      <div>
-                        <span className=''>Personal entidades sin ánimo de lucro</span>
+                        <span className=''>Representantes sector privado</span>
                      </div>
                 </div>
             </div>
@@ -431,7 +425,7 @@ const checkCheckboxes = (ids)=>{
             </div>
             <div className='ficha-col br p0 pc30'>
                 <div className='pt3'>
-                 <div className='bb c'><p>N.º total de participantes:</p></div>   
+                 <div className='bb c'><p>N.º total de ponentes:</p></div>   
                  <div className='bb c'><p>N.º total de mujeres:</p></div>  
                  <div className='bb c'><p>N.º total de hombres:</p></div>
                  <div className=' c'><p>N.º total de otros:</p></div> 
@@ -588,6 +582,7 @@ const checkCheckboxes = (ids)=>{
         </div>
 
         </div>
+        </>
 
   )
 }
