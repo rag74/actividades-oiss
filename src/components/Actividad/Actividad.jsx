@@ -4,6 +4,7 @@ import { useUserAuth } from "../../context/UserAuthContext"
 import { Link, useParams , useNavigate , useLocation } from "react-router-dom";
 import Updating from "../Updating/Updating";
 import ModalStandard from "../ModalStandard/ModalStandard";
+import Switch from "react-switch";
 
 function Actividad({nivelUsuarioS,ID, user, REG, recupero,loading}) {
    
@@ -14,12 +15,16 @@ function Actividad({nivelUsuarioS,ID, user, REG, recupero,loading}) {
   const [vermodal, setVermodal] = useState(false)
   const [modaltipo, setModaltipo] = useState()
   const [tipoerror, setTipoerror] = useState()
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     if (recupero!=null){
         prellenar(recupero,setearTipo,setOrga)
         contarPartPone("part", "partTotal")
         contarPartPone("pone", "poneTotal")
+        if (recupero.tipoFicha === "encurso"){
+            setChecked(true)
+        }
     }
     else {
         setPonentes([0,0,0,0])
@@ -66,9 +71,146 @@ function Actividad({nivelUsuarioS,ID, user, REG, recupero,loading}) {
         <option key={item} value={item}>{item}</option>
    ))
 
-   const contribuciones = codigosPlan.map(item=>(
-        <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
-   ))
+   const handleChangeSwitch = nextChecked => {
+    setChecked(nextChecked); 
+    console.log('Nextcheked? '+nextChecked);  
+  };
+
+ ///CREAR DEPLEGABLE PLAN] ESTRATEGICO
+ const desplegablePlan = creardesplegablePlan(codigosPlan)
+
+ function creardesplegablePlan(codigos){
+
+    const oe111 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "1.1." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const oe112 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "1.2." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const oe221 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "2.1." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const oe331 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "3.1." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const oe441 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "4.1." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const oe442 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "4.2." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const oe443 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "4.3." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const oe551 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "5.1." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const oe552 = codigos.map(item => {
+        if (item.cod.substr(0, 4) == "5.2." && item.cod.length > 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+
+    const ot1 = codigos.map(item => {
+        if (item.cod.substr(0, 1) == "1" && item.cod.length == 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+    
+    const ot2 = codigos.map(item => {
+        if (item.cod.substr(0, 1) == "2" && item.cod.length == 4){
+            return <option key={item.cod} value={[item.cod,item.desc]}>{item.cod} {item.desc}</option>
+            }
+        }
+        )
+   return   <>
+            <optgroup label="OE1: Extender y mejorar las prestaciones de los sistemas de seguridad social"/>
+            <optgroup label="- Resultado 1.1: Promovida la garantía de cobertura de la seguridad social">
+                {oe111}
+            </optgroup>
+            <optgroup label="- Resultado 1.2: Promovido el acceso a la cobertura de la seguridad social">
+                {oe112}
+            </optgroup>
+
+            <optgroup label="OE2: Fomentar la internacionalización de la seguridad social"/>
+            <optgroup label="- Resultado 2.1 Promovida la creación y consolidación de acuerdos multilaterales">
+                {oe221}
+            </optgroup>
+
+            <optgroup label="OE3: Fortalecer los sistemas nacionales de Seguridad Social"/>
+            <optgroup label="- Resultado 3.1 Promovida la gestión de calidad de los sistemas nacionales de seguridad 
+social">
+                {oe331}
+            </optgroup>
+
+            <optgroup label="OE4: Extender y mejorar la asistencia sanitaria"/>
+            <optgroup label="- Resultado 4.1. Promovida la cobertura sanitaria universal">
+                {oe441}
+            </optgroup>
+            <optgroup label="- Resultado 4.2. Promovido el acceso a servicios de salud esenciales de calidad
+">
+                {oe442}
+            </optgroup> 
+            <optgroup label="- Resultado 4.3. Promovido el acceso a medicamentos y vacunas seguros, eficaces, 
+asequibles y de calidad para todas">
+                {oe443}
+            </optgroup>             
+            
+            <optgroup label="OE5: Fortalecer los sistemas nacionales de protección social"/>
+            <optgroup label="- Resultado 5.1. Promovido el fortalecimiento de los sistemas nacionales de protección 
+social">
+                {oe551}
+            </optgroup>
+            <optgroup label="- Resultado 5.2. Promovida la autonomía personal y el cuidado">
+                {oe552}
+            </optgroup>
+
+            <optgroup label="Objetivo Táctico: Fortalecer la gestión interna de calidad en la OISS"/>
+            <optgroup label="- Resultado 1. Reforzada la colaboración con las instituciones miembros y entidades 
+clave">
+                {ot1}
+            </optgroup>
+            <optgroup label="- Resultado 2. Promovida la gestión interna de calidad">
+                {ot2}
+            </optgroup>
+            
+            
+            </>    
+ }
 
    const centroOrganizador = OISSViñetas.map(item=>(
     <option key={item.sigla} value={[item.centro]}>{item.centro}</option>
@@ -148,7 +290,7 @@ const handleSubir = async (ponentes, participantes, tiposubida,llave)=> {
         console.log(recupero)
     }
     
-    var ficha = generarFicha(ponentes, participantes, tiposubida, user, REG, recupero)
+    var ficha = generarFicha(ponentes, participantes, tiposubida, user, REG, recupero,checked)
     
     var verificar = verify(ficha)
 
@@ -196,15 +338,33 @@ const removeError = e => {
 
         <div className="panel-header">
             <Link onClick={() => navigate(-1)} to="/"><div class="buttonNew ml-0"><i class="fa-solid fa-arrow-left"></i></div></Link>
+            {(recupero==null || recupero.tipoFicha == "encurso" ) && (nivelUsuarioS.administrador || nivelUsuarioS.nivel == 1) && 
+                <div className="cursoActividad">
+                    <span className={checked && 'notSelected'}>ficha final</span>
+                    <Switch
+                        onChange={handleChangeSwitch}
+                        checked={checked}
+                        height={20}
+                        width={40}
+                        className="react-switch"
+                        onColor="#86d3ff"
+                        //disabled={permisos.includes(localuser.uid) ? false : true }
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                    />
+                    <p className={!checked && 'notSelected'}>ficha en curso</p>
+                </div>
+            }
         </div>
 
+        <div className="separador"/>
 
         <h3>Información general</h3> 
+
 
         <label for="titulo">Título de la actividad</label>
         <input type="text" name="titulo" id="titulo" onBlur={removeError} />
 
-        <div className="separador"/>
 
         <div className="tipologia">
             <div className="subTipologia" id="">
@@ -437,18 +597,16 @@ const removeError = e => {
 
         <div className="enfoque">
             <div className="subEnfoque w50">
-                <p>Contribución al Plan Estratégico 2020-2023</p>
+                <p>Contribución al Plan Estratégico 2024-2030</p>
                 <select name="contPlan" id="planEstratégico" className="selectPlan" onChange={(ev)=> {handleCont(ev.target.value)}} onClick={removeError} >
                     <option value="">Elija un elemento</option>
-                    {contribuciones}
+                    {desplegablePlan} 
                 </select>
+
                 <div className="separador"/>
+
                 <p>Enfoques transversales</p>
                 <div id="enfoque" onClick={(e)=>{removeError(e)}}>
-                <div className="subSubEnfoque" >
-                <input type="checkbox" id="Enfoque de Derechos Humanos" name="transversales" value="Enfoque de Derechos Humanos" onChange={(e)=>{handleTransversales(e.target.value)}} />
-                <label htmlFor="Enfoque de Derechos Humanos">Enfoque de Derechos Humanos</label>
-                </div>
                 <div className="subSubEnfoque">
                 <input type="checkbox" id="Enfoque de Género" name="transversales" value="Enfoque de Género" onChange={(e)=>{handleTransversales(e.target.value)}}/>
                 <label htmlFor="Enfoque de Género">Enfoque de Género</label>
@@ -511,9 +669,28 @@ const removeError = e => {
         - Principales resultados de la actividad"
             >
         </textarea>
+
+        {(recupero==null || recupero.tipoFicha == "encurso" ) && (nivelUsuarioS.administrador || nivelUsuarioS.nivel == 1) && 
+        <div className="cursoActividad">
+            <span className={checked && 'notSelected'}>ficha final</span>
+            <Switch
+                onChange={handleChangeSwitch}
+                checked={checked}
+                height={20}
+                width={40}
+                className="react-switch"
+                onColor="#86d3ff"
+                //disabled={permisos.includes(localuser.uid) ? false : true }
+                uncheckedIcon={false}
+                checkedIcon={false}
+            />
+            <p className={!checked && 'notSelected'}>ficha en curso</p>
+        </div>
+        }
+        
         <div className="separador"/>
         
-        <div className="buttonControls">
+        <div className="buttonControls mb-20">
            { !recupero &&
             <button className="mr-5" onClick={()=>handleSubir(ponentes, participantes, "publicada")}>Guardar</button>}
 
@@ -524,7 +701,7 @@ const removeError = e => {
             </>
             }
             <button className="mr-5"onClick={goBack}>Salir sin guardar</button>
-            <button className="mr-5" onClick={()=>handleSubir(ponentes, participantes, "publicada",1)}>Guardar LLAVE MAESTRA</button>
+            {/*<button className="mr-5" onClick={()=>handleSubir(ponentes, participantes, "publicada",1)}>Guardar LLAVE MAESTRA</button>*/}
 
             
         </div>

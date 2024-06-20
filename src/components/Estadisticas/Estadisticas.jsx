@@ -101,7 +101,7 @@ useEffect(() => {
         <div className="contResp">
             <ResponsiveContainer width={"90%"} height={400}>
               <BarraActivObj stats = {stats.resultadosPorObjetivo} title = {"Actividades por Orientación Estrategica"} />
-            </ResponsiveContainer>
+            </ResponsiveContainer> 
             <ResponsiveContainer width={"90%"} height={400}>
               <BarraCompResultReg stats = {stats.resultadosPorObjetivo} title = {"Orientación Estrategica / Resultados"} />
             </ResponsiveContainer>

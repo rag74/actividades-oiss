@@ -82,35 +82,57 @@ export function generarStats(fichas) {
     const objetivo = ficha.CodPlanEstratégico.slice(0, 1);
    
     const objetivosVacío= {
-      1:{OE:1,R1: 0,R2: 0,R3: 0,R4: 0,Total: 0},
-      2:{OE:2,R1: 0,R2: 0,R3: 0,R4: 0,Total: 0},
-      3:{OE:3,R1: 0,R2: 0,R3: 0,R4: 0,Total: 0},
-      4:{OE:4,R1: 0,R2: 0,R3: 0,R4: 0,Total: 0}
+      1:{OE:1,"R1.1": 0,"R1.2": 0,"R2.1": 0,"R3.1": 0,"R4.1": 0,"R4.2": 0,"R4.3": 0,"R5.1": 0,"R5.2": 0,"R1": 0,"R2": 0, Total: 0},
+      2:{OE:2,"R1.1": 0,"R1.2": 0,"R2.1": 0,"R3.1": 0,"R4.1": 0,"R4.2": 0,"R4.3": 0,"R5.1": 0,"R5.2": 0,"R1": 0,"R2": 0, Total: 0},
+      3:{OE:3,"R1.1": 0,"R1.2": 0,"R2.1": 0,"R3.1": 0,"R4.1": 0,"R4.2": 0,"R4.3": 0,"R5.1": 0,"R5.2": 0,"R1": 0,"R2": 0, Total: 0},
+      4:{OE:4,"R1.1": 0,"R1.2": 0,"R2.1": 0,"R3.1": 0,"R4.1": 0,"R4.2": 0,"R4.3": 0,"R5.1": 0,"R5.2": 0,"R1": 0,"R2": 0, Total: 0},
+      5:{OE:5,"R1.1": 0,"R1.2": 0,"R2.1": 0,"R3.1": 0,"R4.1": 0,"R4.2": 0,"R4.3": 0,"R5.1": 0,"R5.2": 0,"R1": 0,"R2": 0, Total: 0},
     };
   
    if (!objetivos[objetivo]) {
-      objetivos[objetivo] = {OE: objetivo,R1: 0,R2: 0,R3: 0,R4: 0,Total: 0,};
+      objetivos[objetivo] = {OE: objetivo,"R1.1": null,"R1.2": null,"R2.1": null,"R3.1": null,"R4.1": null,"R4.2": null,"R4.3": null,"R5.1": null,"R5.2": null,"R1": null,"R2": null, Total: null};
     }
   
-
-    switch (ficha.CodPlanEstratégico.slice(4, 5)) {
-      case "1":
-        objetivos[objetivo].R1++;
+  if (ficha.CodPlanEstratégico.length > 5 ) {
+    switch (ficha.CodPlanEstratégico.slice(0, 3)) {
+      case "1.1":
+        objetivos[objetivo]['R1.1']++;
         objetivos[objetivo].Total++;
         break;
-      case "2":
-        objetivos[objetivo].R2++;
+      case "1.2":
+        objetivos[objetivo]['R1.2']++;
         objetivos[objetivo].Total++;
         break;
-      case "3":
-        objetivos[objetivo].R3++;
+      case "2.1":
+        objetivos[objetivo]['R2.1']++;
         objetivos[objetivo].Total++;
         break;
-      case "4":
-        objetivos[objetivo].R4++;
+      case "3.1":
+        objetivos[objetivo]['R3.1']++;
+        objetivos[objetivo].Total++;
+        break;
+      case "4.1":
+        objetivos[objetivo]['R4.1']++;
+        objetivos[objetivo].Total++;
+        break;
+      case "4.2":
+        objetivos[objetivo]['R4.2']++;
+        objetivos[objetivo].Total++;
+        break;
+      case "4.3":
+        objetivos[objetivo]['R4.3']++;
+        objetivos[objetivo].Total++;
+        break;
+      case "5.1":
+      objetivos[objetivo]['R5.1']++;
+      objetivos[objetivo].Total++;
+      break;
+      case "5.2":
+        objetivos[objetivo]['R5.2']++;
         objetivos[objetivo].Total++;
         break;
     }
+  }
 
     const objCompleto = Object.assign({}, objetivosVacío, objetivos);
 

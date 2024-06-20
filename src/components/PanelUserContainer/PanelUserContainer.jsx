@@ -34,6 +34,9 @@ function PanelUserContainer ({user,userNIVEL}) {
     }
     }, [user]);
 
+    var yearLink = new Date()
+    yearLink = yearLink.getFullYear()
+
 
     console.log("niveles usuario")
     console.log(userLevels.nivel)
@@ -59,7 +62,7 @@ function PanelUserContainer ({user,userNIVEL}) {
         :
 
           <div className="panel">
-              <PanelUser userLevels={userLevels} user={user}/>  
+              <PanelUser userLevels={userLevels} user={user} yearLink = {yearLink}/>  
           </div>
       }
       </div>

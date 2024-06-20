@@ -18,6 +18,7 @@ import { arrayToCsv } from "../data/arrayToCsv";
 import { generarStats } from "../data/generarStats";
 import { numeroALetras } from "../data/numeroALetras";
 import { generarStatsComp } from "../data/generarStatsComp";
+import { filtrarPorAnio } from "../data/filtrarPorAnio"; 
 
 const userAuthContext = React.createContext();
 
@@ -228,6 +229,7 @@ export function UserAuthContextProvider(props) {
             eliminarFicha,
             timestampToDate,
             numeroALetras,
+            filtrarPorAnio,
             admin,
             userNIVEL,
             reload,

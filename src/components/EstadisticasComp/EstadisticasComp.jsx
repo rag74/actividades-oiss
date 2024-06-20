@@ -77,7 +77,7 @@ useEffect(() => {
 
         <div className="contResp">
             <ResponsiveContainer width={"90%"} height={500}>
-              <CompBarraOE stats = {statsComp.arrayTipo} cuadroTipo = {"ColumnChart"} state = {false} title = {"Delegaciones - Actividades por tipología"} />
+              <CompBarraOE stats = {statsComp.arrayTipo} cuadroTipo = {"ColumnChart"} state = {true} title = {"Delegaciones - Actividades por tipología"} />
             </ResponsiveContainer>
         </div>
 
@@ -99,7 +99,7 @@ useEffect(() => {
             </ResponsiveContainer>
         </div>
 
-        <div className="separadorChart"/>
+        <div className="separadorChart"/> 
         <div className="separadorChart"/>
       
       </>}  

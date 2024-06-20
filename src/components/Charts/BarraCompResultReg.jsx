@@ -11,11 +11,11 @@ console.log(stats)
 const data = crearArraysData(stats)
 
 function crearArraysData(objeto) {
-    const arrays = [["Orientación Estretégica (OE)","R.1","R.2","R.3"]];
+    const arrays = [["Orientación Estretégica (OE)","R1.1","R1.2","R2.1","R3.1","R4.1","R4.2","R4.3","R5.1","R5.2"]];
   
-    for (let OE = 1; OE < 5; OE++) {
+    for (let OE = 1; OE < 6; OE++) {
       arrays.push(
-        [`OE.${objeto[OE].OE}`, objeto[OE].R1, objeto[OE].R2, objeto[OE].R3 ]
+        [`OE.${objeto[OE].OE}`, objeto[OE]['R1.1'], objeto[OE]['R1.2'], objeto[OE]['R2.1'], objeto[OE]['R3.1'],objeto[OE]['R4.1'], objeto[OE]['R4.2'], objeto[OE]['R4.3'], objeto[OE]['R5.1'], objeto[OE]['R5.2']]
         );
       }
 

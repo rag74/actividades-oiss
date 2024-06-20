@@ -1,15 +1,40 @@
 export function verify(ficha) {
     var mensaje = "OK"
-    console.log(ficha)
+    console.log(ficha)  
    
     if (ficha.tipoFicha === "borrador" ){
         if (!ficha.titulo || !ficha.planEstratégico || !ficha.fechainicio || !ficha.fechafinal){
-            mensaje = "No es posible guardar el borrador (la actividad debe tener definido por lo menos un título, su aporte al Plan Estratétics y fechas de inicio/final)"  
+            mensaje = "No es posible guardar el borrador (la actividad debe tener definido por lo menos un título, su aporte al Plan Estratétics y fechas de inicio y final)"  
         } /*else {
             mensaje = "OK"
          }*/
      return mensaje
      } 
+
+
+    if (ficha.tipoFicha === "encurso"){
+        if (!ficha.titulo || !ficha.planEstratégico || !ficha.fechainicio || !ficha.fechafinal){
+            mensaje = "No es posible guardar la actividad como 'En curso' (la actividad debe tener definido por lo menos un título, su aporte al Plan Estratégico y fechas de inicio y final)"  
+        }
+        if (!ficha.titulo) {
+            let element = document.getElementById("titulo");
+            element.classList.add("error-class");
+        }
+        if (!ficha.fechainicio) {
+            let element = document.getElementById("fechainicio");
+            element.classList.add("error-class");
+        }  
+        if (!ficha.fechafinal) {
+            let element = document.getElementById("fechafinal");
+            element.classList.add("error-class");
+        }
+        if (!ficha.planEstratégico) {
+            let element = document.getElementById("planEstratégico");
+            element.classList.add("error-class");
+        }
+        
+    return mensaje 
+    }
 
     if (ficha.tipoFicha === "publicada"){
         if (!ficha.titulo) {

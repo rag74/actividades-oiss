@@ -7,7 +7,7 @@ import db from '../../firebase';
 import ModalCodigo from "../ModalCodigo/ModalCodigo";
 
 
-function ListadoActividades({nivelUsuarioS,user,REG,fichas,loading,codigosPlan}) {
+function ListadoActividades({nivelUsuarioS,user,REG,YEAR,fichas,loading,codigosPlan, enCurso,aniosUnicos}) {
 
     console.log("print listadoactividades")
     console.log(REG)
@@ -17,8 +17,12 @@ function ListadoActividades({nivelUsuarioS,user,REG,fichas,loading,codigosPlan})
     console.log("print listadoactividades USER")
     console.log(user)
     console.log(user.uid)
-    const {OISSCentro, arrayToCsv, download} = useUserAuth()
     
+    const {OISSCentro, arrayToCsv, download, filtrarPorAnio} = useUserAuth()
+
+    //const fichasFiltradas = filtrarPorAnio(fichas, YEAR)
+    //console.log("Fichas filtradas")
+    //console.log(fichasFiltradas)
     //////MODAL/////
     const [verModal, setVermodal] = useState(false)
     const [modaltipo, setModaltipo] = useState()
@@ -31,8 +35,10 @@ function ListadoActividades({nivelUsuarioS,user,REG,fichas,loading,codigosPlan})
         setVermodal(true)
     }
 
+
     
     const fichasFinales = codigosPlan.map((cod) => {
+
         const fichasElegidas = fichas.filter((ficha) => ficha.CodPlanEstratégico === cod.cod);
 
         if (fichasElegidas.length > 0) {
@@ -65,8 +71,8 @@ function ListadoActividades({nivelUsuarioS,user,REG,fichas,loading,codigosPlan})
                 </div>
                 
                     {fichasElegidas?.map((ficha) => (
-                        <>
-                        <div key={ficha.creado} className={`fileRow ${ficha.creador[1] == nivelUsuarioS.userUID && "aliceBlue"}`} >
+                        <>   
+                        <div key={ficha.creado} className={`fileRow ${ficha.tipoFicha === "encurso" ? "yellow" : ficha.creador[1] == nivelUsuarioS.userUID && "aliceBlue"}`} >
                             <span className="estado hov" draggable>{ficha.CodContable != "S/C" ? <div onClick={nivelUsuarioS.nivel==1 ? ()=>handleAsignar(ficha,"cambiarcodigo"): ()=>{}}><p className={`${handDuplicate(ficha.CodContable) > 1 && "pink fl"}`}>{ficha.CodContable}</p></div> : <div className={`badjeRow black ${nivelUsuarioS.nivel==1 && "hov"}`} onClick={nivelUsuarioS.nivel==1 ? ()=>handleAsignar(ficha,"codigocontable"): ()=>{}}>sin asignar</div>}</span>
 
                             <span className='titulo'>{ficha.titulo} { (nivelUsuarioS.nivel ==1) && <span className="badjeRow green hov">NC</span>}</span>
@@ -161,39 +167,50 @@ const arrHeader = [
     <>
     {verModal && <ModalCodigo modaltipo = {modaltipo} setVermodal = {setVermodal} fichaModal = {fichaModal} fichas = {fichas} REG ={REG} user={user} setModaltipo={setModaltipo} />}
 
-    <h2 className="mb-10">Listado de Actividades {OISSCentro[REG]}</h2>
+    <h2 className="mb-10">Listado de Actividades {OISSCentro[REG]} {YEAR}</h2>
     <div className="panel-header fijo-menu mt-5">
             <Link to={`/panel`}><div class="buttonNew ml-0"><i class="fa-solid fa-arrow-left"></i></div></Link>
             <Link to={`/nuevaficha/${REG}`}><div class="buttonNew ml-0">Nueva ficha</div></Link>
         {fichas.length > 0 &&
             <>
-            <Link to={`/cuadro/${REG}`}><div class="buttonNew ml-0">Cuadro</div></Link>
+            <Link to={`/cuadro/${YEAR}/${REG}`}><div class="buttonNew ml-0">Cuadro</div></Link>
             <Link to={`/stats/${REG}`}><div class="buttonNew ml-0">Estadísticas</div></Link>
             </>
         }
+
+        {aniosUnicos.map((anio) =>{
+                if (anio != YEAR) {
+               return <Link key={anio} to={`/actividades/${anio}/${REG}`}><div class="buttonNew ml-0">{anio}</div></Link>
+            }
+            })
+            }
+
+            
+        {enCurso &&
+            <div className="labels">
+                <div id="square"/>    
+                <p>actividad en curso</p>
+            </div>
+        }
     </div>
+
+
+
+
     {fichasFinales}
-    <div>
+    <div className="mb-10">
         { (nivelUsuarioS.administrador || nivelUsuarioS.nivel == 1)  && fichas.length > 0 &&
         <button onClick={()=>generateCSV(arrHeader, fichas, "fichasCSV")}>Bajar CSV</button>
             }
     </div>
+
+    {fichas.length == 0 &&
+        <div className="sinFichas">
+            <h3>No se han subido fichas de actividades para el Centro o Delegación durante este período.</h3>
+        </div>        
+    }
     </>
   )
 }
 
 export default ListadoActividades
-
-
-/*
-
-
-
-
-    const handDup = (valor)=>{
-        var index = fichasElegidas.indexOf(valor)
-        console.log(fichasElegidas)
-        console.log(valor)
-        console.log(index)                    
-    }
-*/

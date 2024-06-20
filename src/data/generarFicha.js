@@ -1,9 +1,14 @@
-export function generarFicha(ponentes, participantes, tiposubida, user, REG, recupero) {
+export function generarFicha(ponentes, participantes, tiposubida, user, REG, recupero, checked) {
    var ponentes = ponentes
    if (ponentes == undefined){ponentes=""}
    var participantes = participantes
    if (participantes == undefined){participantes=""}
-   var tipoFicha = tiposubida
+   var tipoFicha
+
+   if (checked === true) {
+    tipoFicha = "encurso"
+   } else {tipoFicha = tiposubida}
+    
 
 
    let arr
@@ -54,7 +59,8 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
         período = new Date(fechafinal).getFullYear()
     } else 
     {
-         período = new Date.now().getFullYear()
+         período = new Date()
+         período = período.getFullYear()
     }
     console.log(período)
      
@@ -91,9 +97,7 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
 
     
 
-    /*
-    var arrayObj = [titulo,tipo,subtipo,formato,fechainicio,fechafinal,localidad,país,organizador,organizadorDetalle,cofinanciadora,enlaceActividad,destinatarios,participantes,ponentes,planEstratégico,CodPlanEstratégico,DescPlanEstratégico,transversal,fuentes,descripción]
-    console.log(arrayObj)*/
+   período = obtenerAniosEntreFechas(fechainicio, fechafinal, checked);
 
 
 
@@ -104,6 +108,7 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
         formato,
         fechainicio,
         fechafinal,
+        período,
         localidad,
         país,
         organizador,
@@ -127,7 +132,6 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
         creado,
         editor,
         modificación,
-        período,
         id
         }
 
@@ -140,3 +144,37 @@ export function generarFicha(ponentes, participantes, tiposubida, user, REG, rec
     return (ficha)
 
 }
+
+function obtenerAniosEntreFechas(fecha1, fecha2, checked) {
+
+    // Crear un array vacío para almacenar los años
+    const anios = [];
+
+    if (checked) {
+            // Convertir las fechas a objetos Date
+            const fechaInicio = new Date(fecha1);
+            const fechaFin = new Date(fecha2);
+        
+            // Obtener el año inicial y final
+            const anioInicio = fechaInicio.getFullYear();
+            const anioFin = fechaFin.getFullYear();
+        
+            
+        
+            // Recorrer desde el año inicial hasta el final
+            for (let i = anioInicio; i <= anioFin; i++) {
+            // Agregar el año al array
+            anios.push(i);
+            }
+
+        } else {
+            const fechaFin = new Date(fecha2);
+            const anioFin = fechaFin.getFullYear();
+            anios.push(anioFin);
+        }
+
+    // Devolver el array de años
+    return anios;
+  }
+
+

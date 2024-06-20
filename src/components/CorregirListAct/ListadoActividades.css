@@ -137,19 +137,9 @@ span.accion {
     
 }
 
-.yellow {
-    background-color: rgb(255, 248, 205);
-}
-
 .aliceBlue {
     background-color: aliceblue;
 }
-
-.warn {
-    background-color: red;
-    color: white;
-}
-
 
 .fc {
     width: fit-content;
@@ -164,33 +154,4 @@ span.accion {
     display: flex;
     justify-content: space-around;
     margin-top: 10%;
-}
-
-.labels {
-    display: flex;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    align-items: center;
-    flex-grow: 1;
-    flex-direction: row;
-    justify-content: flex-end;
-}
-
-.labels p {
-    font-size: 14px;
-    font-weight: bold;
-}
-#circle {
-    background: rgb(255, 248, 205);
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-}
-
-#square {
-    background: rgb(255, 248, 205);
-    border-radius: 10%;
-    width: 40px;
-    height: 20px;
-    margin-right: 10px;
 }

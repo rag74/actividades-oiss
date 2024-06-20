@@ -29,6 +29,23 @@
  margin-bottom: 5px;
 }
 
+.cursoActividad {
+    display: flex;
+    padding-top: 8px;
+}
+
+.cursoActividad p {
+    padding-left: 5px;
+}
+
+.cursoActividad span {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.cursoActividad .notSelected {
+    opacity: 0.3;
+}
 
 /*////*/
 .tipologia {
@@ -251,6 +268,10 @@ textarea {
 
 .mb-10 {
     margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
 }
 
 .blue {

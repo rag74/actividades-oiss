@@ -198,3 +198,8 @@
     align-items: center;
 
 }
+
+.avisoEncurso {
+    color: red;
+    font-size: 14px;
+}

@@ -110,7 +110,7 @@ function ModalCodigo ({modaltipo, fichaModal, setVermodal, fichas, REG, user, se
     if (verificar === "OK"){
 
         var editor = [user.email,user.uid]
-        var CodContable = fichaModal.CodPlanEstratégico+codcont+"."
+        var CodContable = fichaModal.CodPlanEstratégico+"1."+codcont+"."
         settextoFinal(CodContable)
         var modificación = Date.now()
         const codigoContable = {
@@ -147,7 +147,7 @@ function ModalCodigo ({modaltipo, fichaModal, setVermodal, fichas, REG, user, se
  
   const verify = (codcont)=> {
     var mensaje = "OK"
-    if ( (/[a-zA-Z][0-9]/.test(codcont)) || (codcont.length === 1 && /[a-zA-Z]/.test(codcont)) ){
+    if ( (/[a-zA-Z][.][0-9]/.test(codcont)) || (codcont.length === 1 && /[a-zA-Z]/.test(codcont)) ){
         console.log("codigo verificado")
     } else {
         mensaje = "revise el código ingresado"
@@ -179,7 +179,7 @@ function ModalCodigo ({modaltipo, fichaModal, setVermodal, fichas, REG, user, se
                     </div>
 
                     { buttonmessage == "OK"  ? 
-                    <div className='tcenter'>{textoFinal}</div> : buttonmessage !== "Cerrar" && buttonmessage !== "ELIMINAR" && <div className='tcenter'>{fichaModal.CodPlanEstratégico}<input type="text" maxlength="2" className='inputCode'id='contable' onBlur={removeError}/></div> 
+                    <div className='tcenter'>{textoFinal}</div> : buttonmessage !== "Cerrar" && buttonmessage !== "ELIMINAR" && <div className='tcenter'>{fichaModal.CodPlanEstratégico}1.<input type="text" maxlength="3" className='inputCode'id='contable' onBlur={removeError}/></div> 
                     }
 
                     { uploadButton ? 

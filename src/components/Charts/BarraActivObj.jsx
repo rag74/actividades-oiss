@@ -12,7 +12,7 @@ function BarraActivObj ({stats, title}) {
   function crearArraysData(objeto) {
     const arrays = [["Orientación Estretégica (OE)","Nro. de actividades"]];
   
-    for (let OE = 1; OE < 5; OE++) {
+    for (let OE = 1; OE < 6; OE++) {
       arrays.push(
         [`OE.${objeto[OE].OE}`, objeto[OE].Total]
         );

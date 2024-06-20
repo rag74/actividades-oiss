@@ -3,14 +3,14 @@ import './PanelUser.css';
 import { useNavigate , Link} from 'react-router-dom'
 import { useUserAuth } from "../../context/UserAuthContext"
 
-function PanelUser({userLevels, user}) {
+function PanelUser({userLevels, user, yearLink}) {
 
   const {OISSViñetas} = useUserAuth()
   const navigate = useNavigate();
 
   const gotoHandle= (center,destino)=>{
     console.log(center,destino)
-    navigate(`/${destino}/${center}/`)
+    navigate(`/${destino}/${yearLink}/${center}/`)
 
   }
 
@@ -19,7 +19,7 @@ function PanelUser({userLevels, user}) {
           { (userLevels.administrador || userLevels.region == item.sigla) &&
                 <div className="viñeta" >
                 <h3>{item.centro}</h3>
-                  <button className='buttonViñeta' disabled={userLevels.nivel == 3 ? true : false} onClick={()=>gotoHandle(item.sigla , "activ" )}>
+                  <button className='buttonViñeta' disabled={userLevels.nivel == 3 ? true : false} onClick={()=>gotoHandle(item.sigla , "actividades" )}>
                     Listado y gestión de actividades realizadas
                   </button>
                   <button className='buttonViñeta' onClick={()=>gotoHandle(item.sigla , "cuadro" )}>

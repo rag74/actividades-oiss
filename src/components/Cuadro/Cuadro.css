@@ -9,7 +9,7 @@
     display: flex;
     padding: 10px;
     flex-direction: column;
-    max-width: 1400px;
+    max-width: 1200px;
     min-width: 680px;
 }
 
@@ -52,22 +52,22 @@ text-align: center;
 }
 
 .c-titulo {
-    width: 12%;
+    width: 13%;
 }
 
 .c-descripcion {
-    width: 37%;
+    width: 32%;
     white-space: pre-wrap;
 }
 
 
 .c-publico {
-    width: 8%;
+    width: 9%;
     white-space: pre-wrap;
 }
 
 .c-formato {
-    width: 6%;
+    width: 8%;
     text-align: center;
 }
 
@@ -124,3 +124,13 @@ text-align: center;
 .c-bt {
     border-top: 1px solid black;
 }
+
+@media print {
+   .cuadro .c-fileRow{
+      page-break-inside: avoid;
+    }
+
+    .cuadro .badjeRow {
+        display: none;
+    }
+  }

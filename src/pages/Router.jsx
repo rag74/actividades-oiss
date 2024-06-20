@@ -19,6 +19,7 @@ import FichaImpresión from '../components/FichaImpresión/FichaImpresión';
 import ModalStandard from '../components/ModalStandard/ModalStandard';
 import CuadroContainer from '../components/CuadroContainer/CuadroContainer'
 import EstadisticasContainer from '../components/EstadisticasContainer/EstadisticasContainer';
+import ListadoActividadContainer2 from '../components/CorregirListActContainer/ListadoActividadContainer2';
 import { useUserAuth } from "../context/UserAuthContext"
 
 import { ProtectedRoute } from "../components/ProtectedRoute";
@@ -47,6 +48,12 @@ function Router() {
                     <Route path='/cuadro/:REG' element={<CuadroContainer user={user} userNIVEL={userNIVEL}/>} />
                     <Route path='/:STATS/:REG' element={<EstadisticasContainer user={user} userNIVEL={userNIVEL}/>} />
                     <Route path='/stat/OISS' element={<EstadisticasContainer user={user} userNIVEL={userNIVEL}/>} />
+                    <Route path='/corregir' element={<ListadoActividadContainer2 user={user} userNIVEL={userNIVEL}/>} />
+
+
+                    <Route path='/actividades/:YEAR/:REG' element={<ListadoActividadContainer user={user} userNIVEL={userNIVEL}/>} />
+                    <Route path='/cuadro/:YEAR/:REG' element={<CuadroContainer user={user} userNIVEL={userNIVEL}/>} />
+
                 </Route>
 
                 <Route path='/login' element={<Login />} />

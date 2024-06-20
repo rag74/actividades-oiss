@@ -27,7 +27,7 @@ function ModalStandard({modaltipo, tipoerror, setVermodal, user, ID, REG, recupe
             setModaltitle("Ficha guardada")
             setModalmessage("el borrador ha sido guardado correctamente en el servidor")
             setButtonmessage("OK")
-            setLinkmodal("/activ/"+REG)
+            setLinkmodal("#")/*("/activ/"+REG)*/
             setClosemodal("#")
             break;
     
@@ -95,7 +95,7 @@ function ModalStandard({modaltipo, tipoerror, setVermodal, user, ID, REG, recupe
                     { uploadButton ? 
                     <Link to={linkmodal}><div className={`buttonModal ${buttonColor}`}><ScaleLoader color="#ffffff" height={10} margin={2} radius={0} speedMultiplier={1}/></div></Link> 
                         :
-                    <Link to={linkmodal}><div className={`buttonModal ${buttonColor}`} onClick={buttonmessage == "ELIMINAR" ? ()=>handleEliminar() : ()=>goBack() }>{buttonmessage}</div></Link>
+                    <Link to={linkmodal}><div className={`buttonModal ${buttonColor}`} onClick={buttonmessage == "ELIMINAR" ? ()=>handleEliminar() : buttonmessage == "OK" ? ()=>goBack() : ()=>setVermodal(false) }>{buttonmessage}</div></Link>
                     }
                 </div>  
     </div>

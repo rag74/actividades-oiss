@@ -63,6 +63,7 @@ const checkCheckboxes = (ids)=>{
     <div className='ficha'>
     <div className="panel-header">
     <Link onClick={() => navigate(-1)} to="/"><div class="buttonNew ml-0"><i class="fa-solid fa-arrow-left"></i></div></Link>
+    {recupero.tipoFicha === "encurso" && <p className='avisoEncurso'>(Aviso: esta actividad está en curso, su ficha puede no estar  completa totalmnente)</p>}
     </div>
         <h1>Ficha de Actividad</h1>
         <div className='ficha-info mt-10'>

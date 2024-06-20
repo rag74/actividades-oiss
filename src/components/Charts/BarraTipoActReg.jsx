@@ -16,7 +16,7 @@ function BarraTipoActReg({stats}) {
     ["Producto", stats.Producto.Total],
   ]
 
-  const actTotal = stats.length
+  const actTotal = (stats.Asesoramiento.Total+stats.Evento.Total+stats.Comunicación.Total+stats.Formación.Total+stats.Producto.Total)
 
   const options = {
       title: `Actividades separadas por tipo`,

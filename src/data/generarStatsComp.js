@@ -29,6 +29,7 @@ export function generarStatsComp(fichas,OISSCentro) {
             OE2: 0,
             OE3: 0,
             OE4: 0,
+            OE5: 0,
             Asesoramiento: 0,
             Comunicación: 0,
             Evento: 0,
@@ -75,6 +76,9 @@ export function generarStatsComp(fichas,OISSCentro) {
             case "4":
             delegAsistAcumlados[delegación].OE4++;
               break;
+            case "5":
+              delegAsistAcumlados[delegación].OE5++;
+                break;
           }
 
         switch (grupo.tipo) {
@@ -206,12 +210,12 @@ export function generarStatsComp(fichas,OISSCentro) {
 const arrayOE = crearArraysOE(delegAcumulados)
 
 function crearArraysOE(objeto) {
-    const arrays = [["Delegación","OE.1","OE.2","OE.3","OE.4"]];
+    const arrays = [["Delegación","OE.1","OE.2","OE.3","OE.4","OE.5"]];
   
     objeto.forEach((grupo) => {
      
     arrays.push(
-        [`${OISSCentro[grupo.delegación]}`, grupo.OE1, grupo.OE2, grupo.OE3, grupo.OE4]
+        [`${OISSCentro[grupo.delegación]}`, grupo.OE1, grupo.OE2, grupo.OE3, grupo.OE4, grupo.OE5]
         ); 
       });
 
@@ -264,14 +268,14 @@ const arrayEnfoque = crearArraysEnfoque(delegAcumulados)
 console.log(arrayEnfoque)
 
 function crearArraysEnfoque(objeto) {
-    const arrays = [["Delegación","Enfoque de Derechos Humanos","Enfoque de Género","Espacio accesible","Huella de carbono reducida"]];
+    const arrays = [["Delegación","Enfoque de Género","Espacio accesible","Huella de carbono reducida"]];
 
     objeto.forEach((grupo) => {
             
-        const totalPart = (grupo["Enfoque de Derechos Humanos"] + grupo["Enfoque de Género"] + grupo["Espacio accesible"] + grupo["Huella de carbono reducida"])
+        const totalPart = (grupo["Enfoque de Género"] + grupo["Espacio accesible"] + grupo["Huella de carbono reducida"])
         
         arrays.push(
-            [`${OISSCentro[grupo.delegación]} (${totalPart})`, grupo["Enfoque de Derechos Humanos"], grupo["Enfoque de Género"], grupo["Espacio accesible"], grupo["Huella de carbono reducida"]]
+            [`${OISSCentro[grupo.delegación]} (${totalPart})`, grupo["Enfoque de Género"], grupo["Espacio accesible"], grupo["Huella de carbono reducida"]]
             ); 
         });
     
